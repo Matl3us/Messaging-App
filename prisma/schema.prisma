@@ -14,11 +14,34 @@ datasource db {
 }
 
 model User {
-  id       String @id @default(uuid())
-  username String @unique @db.VarChar(64)
-  email    String @unique @db.VarChar(64)
-  password String @db.VarChar(64)
-  imageUrl String @db.Text
+  id         String @id @default(uuid())
+  username   String @unique @db.VarChar(64)
+  email      String @unique @db.VarChar(64)
+  password   String @db.VarChar(64)
+  imageUrl   String @db.Text
+  friendCode String @unique
 
   createdAt DateTime @default(now())
+
+  sentRequests     FriendRequest[] @relation("sender")
+  receivedRequests FriendRequest[] @relation("receiver")
+}
+
+model FriendRequest {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+
+  sender     User   @relation("sender", fields: [senderId], references: [id])
+  senderId   String
+  receiver   User   @relation("receiver", fields: [receiverId], references: [id])
+  receiverId String
+
+  status Status
+}
+
+enum Status {
+  PENDING
+  ACCEPTED
+  REJECTED
+  CANCELED
 }

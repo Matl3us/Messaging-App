@@ -1,28 +1,14 @@
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
-import jwt, { JwtPayload } from "jsonwebtoken";
-
-import { db } from "@/lib/db";
+import { getJwtPayload } from "@/lib/jwt";
 
 export async function GET() {
   const cookieStore = cookies();
   const token = cookieStore.get("token")?.value!;
 
   try {
-    const secret = process.env.SECRET!;
-    const decoded = jwt.verify(token, secret) as JwtPayload;
-
-    const user = await db.user.findFirst({
-      where: {
-        OR: [{ id: decoded.sub }, { username: decoded.username }],
-      },
-      select: {
-        email: true,
-        username: true,
-        imageUrl: true,
-      },
-    });
+    const user = await getJwtPayload(token);
 
     if (!user) {
       return new NextResponse("Invalid user.", {

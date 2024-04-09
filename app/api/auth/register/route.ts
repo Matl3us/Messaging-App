@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 
 import bcrypt from "bcrypt";
+import ShortUniqueId from "short-unique-id";
 
 import { db } from "@/lib/db";
 import { registerSchema } from "@/lib/zod-schemas";
@@ -50,6 +51,7 @@ export async function POST(req: Request) {
 
   const saltRounds = 10;
   const passwordHash = await bcrypt.hash(password, saltRounds);
+  const uid = new ShortUniqueId({ length: 10 });
 
   await db.user.create({
     data: {
@@ -57,6 +59,7 @@ export async function POST(req: Request) {
       email,
       password: passwordHash,
       imageUrl: `https://ui-avatars.com/api/?background=random&color=fff&name=${username}`,
+      friendCode: uid.rnd(),
     },
   });
 
