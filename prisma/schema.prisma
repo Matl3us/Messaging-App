@@ -15,9 +15,9 @@ datasource db {
 
 model User {
   id       String @id @default(uuid())
-  username String @unique
-  email    String @unique
-  password String
+  username String @unique @db.VarChar(64)
+  email    String @unique @db.VarChar(64)
+  password String @db.VarChar(64)
   imageUrl String @db.Text
 
   createdAt DateTime @default(now())
