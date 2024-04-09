@@ -10,7 +10,6 @@ export async function POST(req: Request) {
   try {
     reqData = await req.json();
   } catch (err) {
-    console.log(err);
     return new NextResponse("Invalid body data.", {
       status: 400,
     });
@@ -25,13 +24,13 @@ export async function POST(req: Request) {
 
   const { email, username, password, confPassword } = reqData;
   try {
-    const users = await db.user.findMany({
+    const user = await db.user.findFirst({
       where: {
         OR: [{ email }, { username }],
       },
     });
 
-    if (users.length) {
+    if (user) {
       return new NextResponse("Username and email must be unique.", {
         status: 400,
       });

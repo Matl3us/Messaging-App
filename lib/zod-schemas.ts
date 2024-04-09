@@ -21,3 +21,8 @@ export const registerSchema = z
     message: "Passwords don't match.",
     path: ["confPassword"],
   });
+
+export const loginSchema = z.object({
+  email: z.string().min(1, "Email cannot be empty."),
+  password: z.string().min(1, "Password cannot be empty."),
+});
