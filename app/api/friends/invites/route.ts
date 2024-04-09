@@ -32,7 +32,7 @@ export async function POST(req: Request) {
         friendCode,
       },
     });
-    if (!sender || !receiver) {
+    if (!sender || !receiver || receiver.id == sender.id) {
       return new NextResponse("Invalid request.", {
         status: 400,
       });
