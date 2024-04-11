@@ -3,16 +3,24 @@ import { z } from "zod";
 
 import { loginSchema, registerSchema } from "@/lib/zod-schemas";
 
-const BASE_URL = "http://localhost:3000";
-
 export const loginUser = async (values: z.infer<typeof loginSchema>) => {
   const { email, password } = values;
 
-  return fetch(`${BASE_URL}/api/auth/login`, {
+  return fetch("/api/auth/login", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email, password }),
   });
+};
+
+export const logoutUser = async () => {
+  const response = await fetch("/api/auth/logout", {
+    method: "POST",
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to logout user.");
+  }
 };
 
 export const registerUser = async (values: z.infer<typeof registerSchema>) => {
