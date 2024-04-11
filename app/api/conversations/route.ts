@@ -1,0 +1,51 @@
+import { cookies } from "next/headers";
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
+
+import { getUserData } from "@/lib/jwt";
+import { db } from "@/lib/db";
+
+export async function GET() {
+  const cookieStore = cookies();
+  const token = cookieStore.get("token")?.value!;
+  const user = await getUserData(token);
+
+  if (!user) {
+    return new NextResponse("Invalid request.", {
+      status: 400,
+    });
+  }
+
+  try {
+    const conversationsList = await db.conversation.findMany({
+      where: {
+        users: {
+          some: {
+            id: user.id,
+          },
+        },
+      },
+      select: {
+        id: true,
+        name: true,
+        isGroup: true,
+        adminId: true,
+        users: {
+          select: {
+            id: true,
+            username: true,
+            imageUrl: true,
+          },
+        },
+      },
+    });
+
+    return NextResponse.json(conversationsList);
+  } catch (err) {
+    console.log(err);
+
+    return new NextResponse("Internal server error.", {
+      status: 500,
+    });
+  }
+}

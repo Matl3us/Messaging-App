@@ -25,10 +25,14 @@ model User {
 
   sentRequests     FriendRequest[] @relation("sender")
   receivedRequests FriendRequest[] @relation("receiver")
+
+  conversations        Conversation[] @relation("conversation")
+  createdConversations Conversation[] @relation("admin")
 }
 
 model FriendRequest {
-  id        String   @id @default(uuid())
+  id String @id @default(uuid())
+
   createdAt DateTime @default(now())
 
   sender     User   @relation("sender", fields: [senderId], references: [id])
@@ -45,4 +49,17 @@ enum Status {
   REJECTED
   CANCELED
   DELETED
+}
+
+model Conversation {
+  id      String  @id @default(uuid())
+  name    String?
+  isGroup Boolean
+
+  createdAt DateTime @default(now())
+
+  admin   User   @relation("admin", fields: [adminId], references: [id])
+  adminId String
+
+  users User[] @relation("conversation")
 }

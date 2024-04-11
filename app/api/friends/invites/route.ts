@@ -2,10 +2,10 @@ import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-import { getJwtPayload } from "@/lib/jwt";
+import { getUserData } from "@/lib/jwt";
 import { db } from "@/lib/db";
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   const cookieStore = cookies();
   const token = cookieStore.get("token")?.value!;
 
@@ -26,7 +26,7 @@ export async function POST(req: Request) {
   }
 
   try {
-    const sender = await getJwtPayload(token);
+    const sender = await getUserData(token);
     const receiver = await db.user.findUnique({
       where: {
         friendCode,
@@ -72,7 +72,7 @@ export async function PUT(req: NextRequest) {
   }
 
   try {
-    const receiver = await getJwtPayload(token);
+    const receiver = await getUserData(token);
     if (!receiver) {
       return new NextResponse("Invalid request.", {
         status: 400,

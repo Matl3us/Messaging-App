@@ -2,7 +2,7 @@ import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-import { getJwtPayload } from "@/lib/jwt";
+import { getUserData } from "@/lib/jwt";
 import { db } from "@/lib/db";
 
 interface FriendItem {
@@ -17,7 +17,7 @@ interface FriendItem {
 export async function GET() {
   const cookieStore = cookies();
   const token = cookieStore.get("token")?.value!;
-  const user = await getJwtPayload(token);
+  const user = await getUserData(token);
 
   if (!user) {
     return new NextResponse("Invalid request.", {
@@ -103,7 +103,7 @@ export async function PUT(req: NextRequest) {
   }
 
   try {
-    const user = await getJwtPayload(token);
+    const user = await getUserData(token);
     if (!user) {
       return new NextResponse("Invalid request.", {
         status: 400,
