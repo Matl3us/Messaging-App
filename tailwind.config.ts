@@ -74,9 +74,11 @@ const config: Config = {
           900: "var(--accent-900)",
           950: "var(--accent-950)",
         },
+        warning: "#FFBB00",
       },
       fontSize: {
-        sm: "0.750rem",
+        xs: "0.750rem",
+        sm: "0.875rem",
         base: "1rem",
         xl: "1.333rem",
         "2xl": "1.777rem",
