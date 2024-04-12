@@ -19,6 +19,7 @@ import { inviteSchema } from "@/lib/zod-schemas";
 interface FriendItem {
   id: string;
   user: {
+    id: string;
     username: string;
     imageUrl: string;
   };
@@ -27,6 +28,7 @@ interface FriendItem {
 interface InviteItem {
   id: string;
   receiver: {
+    id: string;
     username: string;
     imageUrl: string;
   };
@@ -35,6 +37,7 @@ interface InviteItem {
 interface NotificationItem {
   id: string;
   sender: {
+    id: string;
     username: string;
     imageUrl: string;
   };
