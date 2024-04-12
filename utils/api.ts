@@ -1,3 +1,7 @@
+import { z } from "zod";
+
+import { inviteSchema } from "@/lib/zod-schemas";
+
 export const fetchProfile = async () => {
   const response = await fetch("/api/profile", {
     method: "GET",
@@ -36,4 +40,38 @@ export const fetchInvitesReceived = async () => {
     throw new Error("Failed to fetch received invites.");
   }
   return response.json();
+};
+
+export const postInvite = async (values: z.infer<typeof inviteSchema>) => {
+  const { friendCode } = values;
+
+  return fetch("/api/friends/invites", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ friendCode }),
+  });
+};
+
+export const deleteSentInvite = async (id: string) => {
+  return fetch("/api/friends/invites/created?" + new URLSearchParams({ id }), {
+    method: "PUT",
+  });
+};
+
+export const deleteReceivedInvite = async (id: string) => {
+  return fetch("/api/friends/invites/received?" + new URLSearchParams({ id }), {
+    method: "PUT",
+  });
+};
+
+export const acceptReceivedInvite = async (id: string) => {
+  return fetch("/api/friends/invites?" + new URLSearchParams({ id }), {
+    method: "PUT",
+  });
+};
+
+export const deleteFriendReq = async (id: string) => {
+  return fetch("/api/friends/list?" + new URLSearchParams({ id }), {
+    method: "PUT",
+  });
 };

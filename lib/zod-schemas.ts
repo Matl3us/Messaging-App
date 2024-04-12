@@ -26,3 +26,7 @@ export const loginSchema = z.object({
   email: z.string().min(1, "Email cannot be empty."),
   password: z.string().min(1, "Password cannot be empty."),
 });
+
+export const inviteSchema = z.object({
+  friendCode: z.string().length(10, "Invalid invite code."),
+});

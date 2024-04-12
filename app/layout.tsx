@@ -1,3 +1,5 @@
+import { Toaster } from "@/components/ui/toaster";
+
 import type { Metadata } from "next";
 import "./globals.css";
 
@@ -13,7 +15,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="bg-background-950 text-text-400 text-lg overflow-hidden">
-        {children}
+        <main>{children}</main>
+        <Toaster />
       </body>
     </html>
   );
