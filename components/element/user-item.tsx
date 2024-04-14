@@ -68,10 +68,10 @@ const UserItem = ({
         <DropdownMenu>
           <DropdownMenuTrigger>
             <button className="flex items-center p-[1px] hover:bg-background-800 rounded-md">
-              <Menu size="24" className="text-primary-500" />
+              <Menu size="24" className="text-primary-700" />
             </button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="text-center">
+          <DropdownMenuContent className="text-center data-[state=open]:bg-background-900">
             <DropdownMenuLabel>
               <button onClick={() => onSubmit(id)}>Send message</button>
             </DropdownMenuLabel>

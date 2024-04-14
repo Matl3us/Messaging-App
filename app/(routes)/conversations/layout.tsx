@@ -1,6 +1,5 @@
 "use client";
 
-import { MailSearch } from "lucide-react";
 import { PenLine } from "lucide-react";
 import { ArchiveX } from "lucide-react";
 
@@ -45,8 +44,8 @@ export default function RootLayout({
   );
 
   return (
-    <div className="flex">
-      <div className="h-screen w-72 p-8 rounded-lg bg-background-900">
+    <div className="flex h-full">
+      <div className="min-w-72 p-8 rounded-lg bg-background-900">
         <div className="flex justify-between items-center">
           <h1 className="text-2xl font-medium">Chat</h1>
           <button>
@@ -103,7 +102,7 @@ export default function RootLayout({
           ))}
         </div>
       </div>
-      <div className="m-auto">{children}</div>
+      <div className="m-auto flex-auto">{children}</div>
     </div>
   );
 }

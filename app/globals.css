@@ -6,6 +6,8 @@ html,
 body,
 :root {
   height: 100%;
+  margin: 0;
+  padding: 0;
 }
 
 ::-webkit-scrollbar {
@@ -23,6 +25,21 @@ body,
 
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
+}
+
+em-emoji-picker {
+  --border-radius: 14px;
+  --category-icon-size: 14px;
+  --font-size: 14px;
+
+  --rgb-accent: 255, 51, 0;
+
+  position: relative;
+  left: 100px;
+
+  height: 200px;
+  min-height: 400px;
+  max-height: 800px;
 }
 
 @layer base {
