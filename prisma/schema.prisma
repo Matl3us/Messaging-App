@@ -28,6 +28,8 @@ model User {
 
   conversations        Conversation[] @relation("conversation")
   createdConversations Conversation[] @relation("admin")
+
+  messages Message[]
 }
 
 model FriendRequest {
@@ -61,9 +63,21 @@ model Conversation {
   admin   User   @relation("admin", fields: [adminId], references: [id])
   adminId String
 
-  users User[] @relation("conversation")
+  members User[] @relation("conversation")
+
+  messages Message[]
 }
 
 model Message {
-  id String @id @default(uuid())
+  id      String  @id @default(uuid())
+  content String  @db.Text
+  fileUrl String? @db.Text
+
+  createdAt DateTime @default(now())
+
+  member   User   @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  memberId String
+
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  conversationId String
 }

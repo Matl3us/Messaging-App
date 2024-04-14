@@ -97,7 +97,7 @@ export default function RootLayout({
               id={e.id}
               name={e.name}
               isGroup={e.isGroup}
-              users={e.users}
+              members={e.members}
             />
           ))}
         </div>

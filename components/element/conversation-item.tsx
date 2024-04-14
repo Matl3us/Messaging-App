@@ -5,7 +5,7 @@ interface ConvItemProps {
   id: string;
   name?: string;
   isGroup: boolean;
-  users: Array<UserItemProps>;
+  members: Array<UserItemProps>;
 }
 
 interface UserItemProps {
@@ -14,7 +14,7 @@ interface UserItemProps {
   imageUrl: string;
 }
 
-const ConversationItem = ({ id, name, isGroup, users }: ConvItemProps) => {
+const ConversationItem = ({ id, name, isGroup, members }: ConvItemProps) => {
   const router = useRouter();
   return (
     <div
@@ -35,7 +35,7 @@ const ConversationItem = ({ id, name, isGroup, users }: ConvItemProps) => {
         ) : (
           <Image
             className="rounded-lg"
-            src={users[0]?.imageUrl}
+            src={members[0]?.imageUrl}
             placeholder="empty"
             alt="Avatar"
             width="32"
@@ -47,7 +47,7 @@ const ConversationItem = ({ id, name, isGroup, users }: ConvItemProps) => {
         {name ? (
           <p className="text-background-50 text-sm">{name}</p>
         ) : (
-          <p className="text-background-50 text-sm">{users[0]?.username}</p>
+          <p className="text-background-50 text-sm">{members[0]?.username}</p>
         )}
       </div>
     </div>

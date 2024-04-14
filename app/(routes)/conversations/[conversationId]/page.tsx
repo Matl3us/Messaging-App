@@ -1,14 +1,8 @@
 "use client";
 
-import { Input } from "@/components/ui/input";
-
-import { Smile } from "lucide-react";
-import { SendHorizonal } from "lucide-react";
-
-import data from "@emoji-mart/data";
-import Picker from "@emoji-mart/react";
-import { useState } from "react";
 import { SocketIndicator } from "@/components/ui/socket-indicator";
+import ChatInput from "@/components/element/chat-input";
+import ChatMessages from "@/components/element/chat-messages";
 
 interface IParams {
   conversationId: string;
@@ -16,52 +10,14 @@ interface IParams {
 
 const Conversation = ({ params }: { params: IParams }) => {
   const { conversationId } = params;
-  const [opened, setOpened] = useState(false);
-  const [message, setMessage] = useState("");
-
-  const changeInputState = () => {
-    if (opened) {
-      setOpened(false);
-    } else {
-      setOpened(true);
-    }
-  };
-
-  const addEmote = (emote: any) => {
-    setMessage(message + emote.native);
-  };
 
   return (
     <div className="flex flex-col gap-2 items-center h-full p-6 bg-background-950">
       <div className="self-start">
         <SocketIndicator />
       </div>
-      <div className="flex-1 text-xl">Messages</div>
-      {opened && (
-        <Picker
-          data={data}
-          perLine="8"
-          skinTonePosition="none"
-          previewPosition="none"
-          onEmojiSelect={addEmote}
-        />
-      )}
-      <div className="flex items-center">
-        <Input
-          className="w-[550px] text-base dark:bg-background-800"
-          placeholder={`Write to @user`}
-          onChange={(e) => setMessage(e.target.value)}
-          value={message}
-        />
-        <div className="relative right-[72px] flex gap-3">
-          <button className="hover:text-primary-700 text-primary-600 rounded-lg ">
-            <Smile size="24" onClick={() => changeInputState()} />
-          </button>
-          <button className="hover:text-primary-700 text-primary-600 rounded-lg">
-            <SendHorizonal size="24" />
-          </button>
-        </div>
-      </div>
+      <ChatMessages />
+      <ChatInput conversationID={conversationId} />
     </div>
   );
 };

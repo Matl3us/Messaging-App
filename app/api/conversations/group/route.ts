@@ -21,7 +21,7 @@ export async function POST() {
       data: {
         isGroup: true,
         adminId: user.id,
-        users: {
+        members: {
           connect: { id: user.id },
         },
       },
@@ -105,7 +105,7 @@ export async function PUT(req: NextRequest) {
   try {
     await db.conversation.update({
       data: {
-        users: {
+        members: {
           connect: ids,
         },
       },

@@ -8,7 +8,7 @@ interface ConversationItem {
   id: string;
   name?: string;
   isGroup: boolean;
-  users: Array<UserItem>;
+  members: Array<UserItem>;
 }
 
 interface UserItem {

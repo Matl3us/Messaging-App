@@ -33,13 +33,6 @@ em-emoji-picker {
   --font-size: 14px;
 
   --rgb-accent: 255, 51, 0;
-
-  position: relative;
-  left: 100px;
-
-  height: 200px;
-  min-height: 400px;
-  max-height: 800px;
 }
 
 @layer base {

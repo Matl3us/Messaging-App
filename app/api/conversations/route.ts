@@ -1,6 +1,5 @@
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
 
 import { getUserData } from "@/lib/jwt";
 import { db } from "@/lib/db";
@@ -19,7 +18,7 @@ export async function GET() {
   try {
     const conversationsList = await db.conversation.findMany({
       where: {
-        users: {
+        members: {
           some: {
             id: user.id,
           },
@@ -30,7 +29,7 @@ export async function GET() {
         name: true,
         isGroup: true,
         adminId: true,
-        users: {
+        members: {
           select: {
             id: true,
             username: true,

@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { inviteSchema } from "@/lib/zod-schemas";
+import { inviteSchema, messageSchema } from "@/lib/zod-schemas";
 
 export const fetchProfile = async () => {
   const response = await fetch("/api/profile", {
@@ -90,4 +90,20 @@ export const createPrivateConversation = async (id: string) => {
   return fetch("/api/conversations/private?" + new URLSearchParams({ id }), {
     method: "POST",
   });
+};
+
+export const createMessage = async (
+  values: z.infer<typeof messageSchema>,
+  id: string
+) => {
+  const { message } = values;
+
+  return fetch(
+    "/api/socket/messages?" + new URLSearchParams({ conversationId: id }),
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ content: message }),
+    }
+  );
 };

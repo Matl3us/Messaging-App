@@ -35,7 +35,7 @@ export async function POST(req: NextRequest) {
       data: {
         isGroup: false,
         adminId: user.id,
-        users: {
+        members: {
           connect: [
             {
               id: friend.id,
@@ -49,6 +49,51 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({
       msg: "Success",
     });
+  } catch (err) {
+    console.log(err);
+
+    return new NextResponse("Internal server error.", {
+      status: 500,
+    });
+  }
+}
+
+export async function GET(req: NextRequest) {
+  const cookieStore = cookies();
+  const token = cookieStore.get("token")?.value!;
+
+  const searchParams = req.nextUrl.searchParams;
+  const id = searchParams.get("id");
+
+  if (!id) {
+    return new NextResponse("Invalid conversation ID.", {
+      status: 400,
+    });
+  }
+
+  try {
+    const user = await getUserData(token);
+    if (!user) {
+      return new NextResponse("Invalid request.", {
+        status: 400,
+      });
+    }
+
+    const conversation = await db.conversation.findFirst({
+      where: {
+        id,
+        members: {
+          some: {
+            id: user.id,
+          },
+        },
+      },
+      include: {
+        messages: true,
+      },
+    });
+
+    return NextResponse.json({ conversation });
   } catch (err) {
     console.log(err);
 

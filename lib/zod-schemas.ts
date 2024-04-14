@@ -30,3 +30,7 @@ export const loginSchema = z.object({
 export const inviteSchema = z.object({
   friendCode: z.string().length(10, "Invalid invite code."),
 });
+
+export const messageSchema = z.object({
+  message: z.string().max(512, "Message too long."),
+});
