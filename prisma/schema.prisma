@@ -63,3 +63,7 @@ model Conversation {
 
   users User[] @relation("conversation")
 }
+
+model Message {
+  id String @id @default(uuid())
+}

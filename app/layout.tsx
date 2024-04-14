@@ -3,6 +3,8 @@ import { Toaster } from "@/components/ui/toaster";
 import type { Metadata } from "next";
 import "./globals.css";
 
+import { SocketProvider } from "@/components/providers/socket-provider";
+
 export const metadata: Metadata = {
   title: "Messaging app",
 };
@@ -15,7 +17,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="bg-background-950 text-text-400 text-lg h-full">
-        <main>{children}</main>
+        <SocketProvider>{children}</SocketProvider>
         <Toaster />
       </body>
     </html>

@@ -102,7 +102,7 @@ export default function RootLayout({
           ))}
         </div>
       </div>
-      <div className="m-auto flex-auto">{children}</div>
+      <div className="flex-auto">{children}</div>
     </div>
   );
 }

@@ -8,6 +8,7 @@ import { SendHorizonal } from "lucide-react";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 import { useState } from "react";
+import { SocketIndicator } from "@/components/ui/socket-indicator";
 
 interface IParams {
   conversationId: string;
@@ -31,7 +32,11 @@ const Conversation = ({ params }: { params: IParams }) => {
   };
 
   return (
-    <div className="flex flex-col gap-2 items-center justify-end p-6 h-screen bg-background-950">
+    <div className="flex flex-col gap-2 items-center h-full p-6 bg-background-950">
+      <div className="self-start">
+        <SocketIndicator />
+      </div>
+      <div className="flex-1 text-xl">Messages</div>
       {opened && (
         <Picker
           data={data}
