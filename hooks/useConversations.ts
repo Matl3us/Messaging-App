@@ -9,12 +9,20 @@ interface ConversationItem {
   name?: string;
   isGroup: boolean;
   members: Array<UserItem>;
+  messages?: Array<MessageItem>;
 }
 
 interface UserItem {
   id: string;
   username: string;
   imageUrl: string;
+}
+
+interface MessageItem {
+  id: string;
+  content: string;
+  fileUrl: string;
+  createdAt: Date;
 }
 
 export function useConversations(): {

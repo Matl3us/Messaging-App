@@ -88,9 +88,6 @@ export async function GET(req: NextRequest) {
           },
         },
       },
-      include: {
-        messages: true,
-      },
     });
 
     return NextResponse.json({ conversation });

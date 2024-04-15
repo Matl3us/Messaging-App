@@ -50,10 +50,10 @@ const ChatInput = ({ conversationID }: ChatInputProps) => {
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <div className="flex items-center">
+                  <div className="flex items-center w-[550px]">
                     <Input
                       disabled={loading}
-                      className="w-[1150px] text-base dark:bg-background-800"
+                      className="text-base dark:bg-background-800"
                       placeholder={`Write to @user`}
                       {...field}
                     />

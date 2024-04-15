@@ -36,6 +36,12 @@ export async function GET() {
             imageUrl: true,
           },
         },
+        messages: {
+          take: 1,
+          orderBy: {
+            createdAt: "desc",
+          },
+        },
       },
     });
 

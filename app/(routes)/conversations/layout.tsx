@@ -39,6 +39,8 @@ export default function RootLayout({
     }
   };
 
+  console.log(conversations);
+
   const filteredFriends = friends.filter((item) =>
     item?.user?.username.includes(friendName)
   );
@@ -98,6 +100,7 @@ export default function RootLayout({
               name={e.name}
               isGroup={e.isGroup}
               members={e.members}
+              lastMessage={e?.messages[0]}
             />
           ))}
         </div>

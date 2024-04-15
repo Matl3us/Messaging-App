@@ -79,7 +79,7 @@ const config: Config = {
         warning: "#FFD000",
       },
       fontSize: {
-        xs: "0.7rem",
+        xs: ["0.7rem", "0.9rem"],
         sm: "0.875rem",
         base: "0.95rem",
         xl: "1.333rem",

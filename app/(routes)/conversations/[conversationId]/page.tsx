@@ -16,7 +16,12 @@ const Conversation = ({ params }: { params: IParams }) => {
       <div className="self-start">
         <SocketIndicator />
       </div>
-      <ChatMessages />
+      <ChatMessages
+        name="Name"
+        conversationId={conversationId}
+        apiUrl="/api/messages"
+        socketUrl="/api/socket/messages"
+      />
       <ChatInput conversationID={conversationId} />
     </div>
   );
