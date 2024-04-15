@@ -19,14 +19,18 @@ type MessageWithMember = Message & {
 
 interface ChatMessagesProps {
   name: string;
+  userId: string;
   conversationId: string;
+  imageUrl: string;
   apiUrl: string;
   socketUrl: string;
 }
 
 const ChatMessages = ({
   name,
+  userId,
   conversationId,
+  imageUrl,
   apiUrl,
   socketUrl,
 }: ChatMessagesProps) => {
@@ -58,11 +62,11 @@ const ChatMessages = ({
   }
 
   return (
-    <div className="flex flex-1 flex-col w-[550px] overflow-scroll">
+    <div className="flex flex-1 flex-col w-full overflow-scroll">
       <div className="flex flex-col items-center mt-auto">
         <Image
           className="rounded-lg"
-          src="https://ui-avatars.com/api/?background=random&color=fff&name=user"
+          src={imageUrl}
           placeholder="empty"
           alt="Avatar"
           width="64"
@@ -70,7 +74,7 @@ const ChatMessages = ({
           unoptimized
         />
         <p className="mb-12 mt-6 font-semibold text-background-500 ">
-          This is start of the conversation with {name}
+          This is the start of the conversation with {name}
         </p>
       </div>
       <div className="flex flex-col-reverse mt-auto">
@@ -80,6 +84,7 @@ const ChatMessages = ({
               <ChatItem
                 key={message.id}
                 id={message.id}
+                userId={userId}
                 member={message.member}
                 content={message.content}
                 fileUrl={message.fileUrl}

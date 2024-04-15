@@ -64,7 +64,7 @@ export default function RootLayout({
 
   return (
     <div className="flex h-full">
-      <div className="min-w-80 p-8 rounded-lg bg-background-900">
+      <div className="min-w-80 p-8 bg-background-900">
         <div className="flex justify-between items-center">
           <h1 className="text-2xl font-medium">Chat</h1>
           <button>

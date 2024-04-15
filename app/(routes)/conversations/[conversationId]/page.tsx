@@ -1,6 +1,5 @@
 "use client";
 
-import { SocketIndicator } from "@/components/ui/socket-indicator";
 import ChatInput from "@/components/element/chat-input";
 import ChatMessages from "@/components/element/chat-messages";
 import { useEffect, useState } from "react";
@@ -17,8 +16,7 @@ type UserData = {
   imageUrl: string;
 };
 
-const createConversationName = (members: Array<UserData>, user: UserData) => {
-  const otherUsers = members.filter((member) => member.id !== user.id);
+const createConversationName = (otherUsers: Array<UserData>) => {
   return otherUsers.length > 1
     ? `@${otherUsers.join(", ")}`
     : `@${otherUsers[0].username}`;
@@ -43,17 +41,19 @@ const Conversation = ({ params }: { params: IParams }) => {
   }, []);
 
   let name = "";
+  let imageUrl = "";
   if (!loadingConversation) {
+    const otherUsers = conversation?.conversation?.members.filter(
+      (member) => member.id !== userData.id
+    );
     name = conversation?.name
       ? conversation?.name
-      : createConversationName(conversation?.conversation?.members, userData);
+      : createConversationName(otherUsers);
+    imageUrl = otherUsers[0].imageUrl;
   }
 
   return (
-    <div className="flex flex-col gap-2 items-center h-full p-6 bg-background-950">
-      <div className="self-start">
-        <SocketIndicator />
-      </div>
+    <div className="flex h-full flex-col gap-2 items-center p-6 bg-background-950">
       {loadingConversation ? (
         <div className="flex flex-col flex-1 justify-center items-center">
           <Loader2 className="h-10 w-10 text-primary-600 animate-spin" />
@@ -62,9 +62,11 @@ const Conversation = ({ params }: { params: IParams }) => {
         <>
           <ChatMessages
             name={name}
+            userId={userData.id}
             conversationId={conversationId}
             apiUrl="/api/messages"
             socketUrl="/api/socket/messages"
+            imageUrl={imageUrl}
           />
           <ChatInput name={name} conversationID={conversationId} />
         </>

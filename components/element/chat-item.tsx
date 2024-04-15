@@ -6,6 +6,7 @@ import Image from "next/image";
 
 interface ChatItemProps {
   id: string;
+  userId: string;
   content: string;
   member: User;
   timestamp: string;
@@ -16,6 +17,7 @@ interface ChatItemProps {
 
 const ChatItem = ({
   id,
+  userId,
   content,
   member,
   timestamp,
@@ -23,6 +25,32 @@ const ChatItem = ({
   // currentMember,
   socketUrl,
 }: ChatItemProps) => {
+  if (userId === member.id) {
+    return (
+      <div className="relative flex justify-end items-center p-2 mb-2">
+        <div className="flex flex-row-reverse gap-x-2 items-center">
+          <Image
+            className="rounded-lg"
+            src={member.imageUrl}
+            placeholder="empty"
+            alt="Avatar"
+            width="26"
+            height="26"
+            unoptimized
+          />
+          <div className="flex flex-col w-full">
+            <div className="py-1 px-3 rounded-xl text-sm text-primary-50 bg-primary-600 hover:bg-primary-700">
+              {content}
+            </div>
+            <p className="absolute top-10 right-12 text-xs text-background-600 mt-1">
+              {timestamp}
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="relative flex items-center p-2">
       <div className="flex gap-x-2 items-center">
@@ -40,6 +68,9 @@ const ChatItem = ({
           <div className="py-1 px-3 rounded-xl text-sm text-background-100 bg-background-800 hover:bg-background-900">
             {content}
           </div>
+          <p className="absolute top-14 text-xs text-background-600 mt-1">
+            {timestamp}
+          </p>
         </div>
       </div>
     </div>
