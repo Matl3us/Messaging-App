@@ -20,10 +20,11 @@ import { createMessage } from "@/utils/api";
 import EmojiPicker from "./emoji-picker";
 
 interface ChatInputProps {
+  name: string;
   conversationID: string;
 }
 
-const ChatInput = ({ conversationID }: ChatInputProps) => {
+const ChatInput = ({ name, conversationID }: ChatInputProps) => {
   const [loading, setLoading] = useState(false);
 
   const form = useForm<z.infer<typeof messageSchema>>({
@@ -54,7 +55,7 @@ const ChatInput = ({ conversationID }: ChatInputProps) => {
                     <Input
                       disabled={loading}
                       className="text-base dark:bg-background-800"
-                      placeholder={`Write to @user`}
+                      placeholder={`Message ${name}`}
                       {...field}
                     />
                     <div className="hover:text-primary-700 text-primary-600 rounded-lg relative right-10 top-1">

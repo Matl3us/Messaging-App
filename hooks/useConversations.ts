@@ -2,7 +2,11 @@
 
 import { useState, useEffect } from "react";
 
-import { fetchConversations, createPrivateConversation } from "@/utils/api";
+import {
+  fetchConversations,
+  fetchConversation,
+  createPrivateConversation,
+} from "@/utils/api";
 
 interface ConversationItem {
   id: string;
@@ -23,6 +27,7 @@ interface MessageItem {
   content: string;
   fileUrl: string;
   createdAt: Date;
+  member: UserItem;
 }
 
 export function useConversations(): {
@@ -55,6 +60,36 @@ export function useConversations(): {
   };
 
   return { conversations, loadingConversations, refreshConversations };
+}
+
+export function useConversation(id: string): {
+  conversation: ConversationItem;
+  loadingConversation: boolean;
+} {
+  const [conversation, setConversation] = useState<ConversationItem>({
+    id: "",
+    isGroup: false,
+    members: [],
+  });
+  const [loadingConversation, setLoading] = useState(true);
+
+  const fetchConversationData = async (id: string) => {
+    try {
+      const fetchedConversations: ConversationItem = await fetchConversation(
+        id
+      );
+      setConversation(fetchedConversations);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching conversation:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchConversationData(id);
+  }, [id]);
+
+  return { conversation, loadingConversation };
 }
 
 export function useCreatePrivateConv(refreshConversations: () => void) {

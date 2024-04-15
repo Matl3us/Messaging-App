@@ -77,9 +77,22 @@ export const deleteFriendReq = async (id: string) => {
 };
 
 export const fetchConversations = async () => {
-  const response = await fetch("/api/conversations", {
+  const response = await fetch("/api/conversations/all", {
     method: "GET",
   });
+  if (!response.ok) {
+    throw new Error("Failed to fetch conversations.");
+  }
+  return response.json();
+};
+
+export const fetchConversation = async (id: string) => {
+  const response = await fetch(
+    "/api/conversations?" + new URLSearchParams({ id }),
+    {
+      method: "GET",
+    }
+  );
   if (!response.ok) {
     throw new Error("Failed to fetch conversations.");
   }

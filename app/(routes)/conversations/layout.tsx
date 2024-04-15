@@ -7,7 +7,7 @@ import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Input } from "@/components/ui/input";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useFriends } from "@/hooks/useFriends";
 import UserItemScroll from "@/components/element/user-item-scroll";
 import {
@@ -15,6 +15,12 @@ import {
   useCreatePrivateConv,
 } from "@/hooks/useConversations";
 import ConversationItem from "@/components/element/conversation-item";
+
+type UserData = {
+  id: string;
+  username: string;
+  imageUrl: string;
+};
 
 export default function RootLayout({
   children,
@@ -29,6 +35,19 @@ export default function RootLayout({
 
   const [opened, setOpened] = useState(false);
   const [friendName, setFriendName] = useState("");
+  const [userData, setUserData] = useState<UserData>({
+    id: "",
+    username: "",
+    imageUrl: "",
+  });
+
+  useEffect(() => {
+    const item = localStorage.getItem("userData");
+    if (item) {
+      const obj = JSON.parse(item) as UserData;
+      setUserData(obj);
+    }
+  }, []);
 
   const changeInputState = () => {
     if (opened) {
@@ -39,15 +58,13 @@ export default function RootLayout({
     }
   };
 
-  console.log(conversations);
-
   const filteredFriends = friends.filter((item) =>
     item?.user?.username.includes(friendName)
   );
 
   return (
     <div className="flex h-full">
-      <div className="min-w-72 p-8 rounded-lg bg-background-900">
+      <div className="min-w-80 p-8 rounded-lg bg-background-900">
         <div className="flex justify-between items-center">
           <h1 className="text-2xl font-medium">Chat</h1>
           <button>
@@ -99,6 +116,7 @@ export default function RootLayout({
               id={e.id}
               name={e.name}
               isGroup={e.isGroup}
+              memberId={userData?.id}
               members={e.members}
               lastMessage={e?.messages[0]}
             />

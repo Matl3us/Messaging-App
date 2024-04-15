@@ -69,8 +69,8 @@ const ChatMessages = ({
           height="64"
           unoptimized
         />
-        <p className="mt-6 font-semibold text-background-500 ">
-          This is start of the conversation with @user
+        <p className="mb-12 mt-6 font-semibold text-background-500 ">
+          This is start of the conversation with {name}
         </p>
       </div>
       <div className="flex flex-col-reverse mt-auto">

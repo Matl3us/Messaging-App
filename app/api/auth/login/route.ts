@@ -45,6 +45,11 @@ export async function POST(req: Request) {
 
     const response = NextResponse.json({
       msg: "Success",
+      data: {
+        id: user.id,
+        username: user.username,
+        imageUrl: user.imageUrl,
+      },
     });
 
     response.cookies.set({

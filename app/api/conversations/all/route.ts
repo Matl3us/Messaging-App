@@ -1,41 +1,34 @@
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
 
 import { getUserData } from "@/lib/jwt";
 import { db } from "@/lib/db";
 
-export async function GET(req: NextRequest) {
+export async function GET() {
   const cookieStore = cookies();
   const token = cookieStore.get("token")?.value!;
+  const user = await getUserData(token);
 
-  const searchParams = req.nextUrl.searchParams;
-  const id = searchParams.get("id");
-
-  if (!id) {
-    return new NextResponse("Invalid conversation ID.", {
+  if (!user) {
+    return new NextResponse("Invalid request.", {
       status: 400,
     });
   }
 
   try {
-    const user = await getUserData(token);
-    if (!user) {
-      return new NextResponse("Invalid request.", {
-        status: 400,
-      });
-    }
-
-    const conversation = await db.conversation.findFirst({
+    const conversationsList = await db.conversation.findMany({
       where: {
-        id,
         members: {
           some: {
             id: user.id,
           },
         },
       },
-      include: {
+      select: {
+        id: true,
+        name: true,
+        isGroup: true,
+        adminId: true,
         members: {
           select: {
             id: true,
@@ -43,10 +36,25 @@ export async function GET(req: NextRequest) {
             imageUrl: true,
           },
         },
+        messages: {
+          take: 1,
+          orderBy: {
+            createdAt: "desc",
+          },
+          include: {
+            member: {
+              select: {
+                id: true,
+                username: true,
+                imageUrl: true,
+              },
+            },
+          },
+        },
       },
     });
 
-    return NextResponse.json({ conversation });
+    return NextResponse.json(conversationsList);
   } catch (err) {
     console.log(err);
 
