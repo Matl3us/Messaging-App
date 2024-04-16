@@ -73,7 +73,7 @@ const Conversation = ({ params }: { params: IParams }) => {
                 height="32"
                 unoptimized
               />
-              <p className="text-background-100 text-base">User</p>
+              <p className="text-background-100 text-base">{name.slice(1)}</p>
             </div>
             <div className="flex gap-2 items-center">
               <button>

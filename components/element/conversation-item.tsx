@@ -54,6 +54,7 @@ const ConversationItem = ({
 }: ConvItemProps) => {
   const router = useRouter();
   const info = createInfoText(memberId, lastMessage);
+  const otherUsers = members.filter((member) => member.id !== memberId);
 
   return (
     <div
@@ -74,7 +75,7 @@ const ConversationItem = ({
         ) : (
           <Image
             className="rounded-lg"
-            src={members[0]?.imageUrl}
+            src={otherUsers[0]?.imageUrl}
             placeholder="empty"
             alt="Avatar"
             width="32"
@@ -86,7 +87,9 @@ const ConversationItem = ({
           {name ? (
             <p className="text-background-50 text-sm">{name}</p>
           ) : (
-            <p className="text-background-50 text-sm">{members[0]?.username}</p>
+            <p className="text-background-50 text-sm">
+              {otherUsers[0]?.username}
+            </p>
           )}
           <div className="text-xs text-background-500">
             <div className="text-[12px]">{info}</div>

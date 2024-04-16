@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 
-import { Fragment } from "react";
+import { Fragment, useEffect, useRef } from "react";
 import { format } from "date-fns";
 
 import { Message, User } from "@prisma/client";
@@ -10,6 +10,7 @@ import { Message, User } from "@prisma/client";
 import { useChatQuery } from "@/hooks/useChatQuery";
 import { Loader2, ServerCrash } from "lucide-react";
 import ChatItem from "./chat-item";
+import { useChatSocket } from "@/hooks/useChatSocket";
 
 const DATE_FORMAT = "d MMM yyyy, HH:mm";
 
@@ -35,6 +36,7 @@ const ChatMessages = ({
   socketUrl,
 }: ChatMessagesProps) => {
   const queryKey = `chat:${conversationId}`;
+  const addKey = `chat:${conversationId}:messages`;
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, status } =
     useChatQuery({
@@ -42,6 +44,16 @@ const ChatMessages = ({
       apiUrl,
       paramValue: conversationId,
     });
+  useChatSocket({ queryKey, addKey });
+
+  const messagesEndRef = useRef(null);
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView();
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [data]);
 
   if (status === "pending") {
     return (
@@ -62,7 +74,7 @@ const ChatMessages = ({
   }
 
   return (
-    <div className="flex flex-1 flex-col p-6 w-full overflow-scroll">
+    <div className="flex flex-1 flex-col p-6 lg:w-full overflow-scroll">
       <div className="flex flex-col items-center mt-auto">
         <Image
           className="rounded-lg"
@@ -95,6 +107,7 @@ const ChatMessages = ({
           </Fragment>
         ))}
       </div>
+      <div ref={messagesEndRef} />
     </div>
   );
 };

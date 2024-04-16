@@ -11,7 +11,6 @@ interface ChatItemProps {
   member: User;
   timestamp: string;
   fileUrl: string | null;
-  //currentMember: User;
   socketUrl: string;
 }
 
@@ -22,7 +21,6 @@ const ChatItem = ({
   member,
   timestamp,
   fileUrl,
-  // currentMember,
   socketUrl,
 }: ChatItemProps) => {
   if (userId === member.id) {
@@ -42,7 +40,7 @@ const ChatItem = ({
             <div className="py-1 px-3 rounded-xl text-sm text-primary-50 bg-primary-600 hover:bg-primary-700">
               {content}
             </div>
-            <p className="absolute top-10 right-12 text-xs text-background-600 mt-1">
+            <p className="absolute top-10 right-[42px] text-[10px] text-background-600">
               {timestamp}
             </p>
           </div>
@@ -52,7 +50,7 @@ const ChatItem = ({
   }
 
   return (
-    <div className="relative flex items-center p-2">
+    <div className="relative flex items-center p-2 mb-2">
       <div className="flex gap-x-2 items-center">
         <Image
           className="rounded-lg relative top-2"
@@ -68,7 +66,7 @@ const ChatItem = ({
           <div className="py-1 px-3 rounded-xl text-sm text-background-100 bg-background-800 hover:bg-background-900">
             {content}
           </div>
-          <p className="absolute top-14 text-xs text-background-600 mt-1">
+          <p className="absolute top-[52px] text-[10px] text-background-600">
             {timestamp}
           </p>
         </div>

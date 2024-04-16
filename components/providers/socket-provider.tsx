@@ -22,26 +22,30 @@ export const SocketProvider = ({ children }: { children: React.ReactNode }) => {
   const [isConnected, setIsConnected] = useState(false);
 
   useEffect(() => {
-    const socketInstance = new (ClientIO as any)(
-      process.env.NEXT_PUBLIC_SITE_URL!,
-      {
-        path: "/api/socket/io",
-        addTrailingSlash: false,
-      }
-    );
+    const socket = (ClientIO as any)(`:${3001}`, {
+      path: "/api/socket/io",
+      addTrailingSlash: false,
+    });
 
-    socketInstance.on("connect", () => {
+    socket.on("connect", () => {
       setIsConnected(true);
+      console.log("Connected");
     });
 
-    socketInstance.on("disconnect", () => {
+    socket.on("disconnect", () => {
       setIsConnected(false);
+      console.log("Disconnected");
     });
 
-    setSocket(socketInstance);
+    socket.on("connect_error", async (err: any) => {
+      console.log(`connect_error due to ${err.message}`);
+      await fetch("/api/socket/io");
+    });
+
+    setSocket(socket);
 
     return () => {
-      socketInstance.disconnect();
+      socket.disconnect();
     };
   }, []);
 

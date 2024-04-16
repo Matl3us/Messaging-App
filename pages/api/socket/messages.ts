@@ -65,6 +65,15 @@ export default async function handler(
         conversationId: conversationId as string,
         memberId: user.id,
       },
+      include: {
+        member: {
+          select: {
+            id: true,
+            username: true,
+            imageUrl: true,
+          },
+        },
+      },
     });
 
     const conversationKey = `chat:${conversationId}:messages`;
