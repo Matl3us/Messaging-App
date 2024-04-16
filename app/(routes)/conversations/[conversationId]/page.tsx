@@ -4,7 +4,9 @@ import ChatInput from "@/components/element/chat-input";
 import ChatMessages from "@/components/element/chat-messages";
 import { useEffect, useState } from "react";
 import { useConversation } from "@/hooks/useConversations";
-import { Loader2 } from "lucide-react";
+import { Info, Loader2, Phone } from "lucide-react";
+
+import Image from "next/image";
 
 interface IParams {
   conversationId: string;
@@ -53,13 +55,41 @@ const Conversation = ({ params }: { params: IParams }) => {
   }
 
   return (
-    <div className="flex h-full flex-col gap-2 items-center p-6 bg-background-950">
+    <div className="flex h-full flex-col gap-2 items-center bg-background-950">
       {loadingConversation ? (
         <div className="flex flex-col flex-1 justify-center items-center">
           <Loader2 className="h-10 w-10 text-primary-600 animate-spin" />
         </div>
       ) : (
         <>
+          <div className="flex items-center justify-between px-6 w-full h-12 border-b-2 border-background-900">
+            <div className="flex gap-3 items-center">
+              <Image
+                className="rounded-lg"
+                src={imageUrl}
+                placeholder="empty"
+                alt="Avatar"
+                width="32"
+                height="32"
+                unoptimized
+              />
+              <p className="text-background-100 text-base">User</p>
+            </div>
+            <div className="flex gap-2 items-center">
+              <button>
+                <Phone
+                  size="32"
+                  className="p-1 hover:bg-background-800 text-primary-500 rounded-lg"
+                />
+              </button>
+              <button>
+                <Info
+                  size="32"
+                  className="p-1 hover:bg-background-800 text-primary-500 rounded-lg"
+                />
+              </button>
+            </div>
+          </div>
           <ChatMessages
             name={name}
             userId={userData.id}

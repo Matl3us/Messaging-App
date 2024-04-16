@@ -42,7 +42,7 @@ const ChatInput = ({ name, conversationID }: ChatInputProps) => {
   }
 
   return (
-    <div className="flex items-center">
+    <div className="flex items-center p-6">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <FormField

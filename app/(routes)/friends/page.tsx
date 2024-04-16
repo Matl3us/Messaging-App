@@ -63,8 +63,8 @@ const Friends = () => {
   }
 
   return (
-    <div className="flex p-24 gap-24">
-      <div className="min-h-96 max-w-[800px] w-96 p-12 rounded-lg bg-background-900">
+    <div className="flex px-24 mt-12 gap-24 max-w-[1200px] mx-auto">
+      <div className="min-h-96 max-w-[800px] mx-auto w-96 p-12 rounded-lg bg-background-900">
         <div className="flex items-center gap-2">
           <p className="text-2xl font-medium">Friends</p>
           <button>

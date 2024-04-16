@@ -36,7 +36,7 @@ const Login = () => {
   }
 
   return (
-    <div className="w-[450px] mx-auto mt-24 p-12 rounded-lg bg-background-900 flex flex-col gap-4">
+    <div className="w-[450px] m-auto mt-24 p-12 rounded-lg bg-background-900 flex flex-col gap-4">
       <h1 className="mb-6 text-3xl font-semibold text-center text-text-500">
         Login
       </h1>

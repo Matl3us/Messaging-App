@@ -62,7 +62,7 @@ const ChatMessages = ({
   }
 
   return (
-    <div className="flex flex-1 flex-col w-full overflow-scroll">
+    <div className="flex flex-1 flex-col p-6 w-full overflow-scroll">
       <div className="flex flex-col items-center mt-auto">
         <Image
           className="rounded-lg"

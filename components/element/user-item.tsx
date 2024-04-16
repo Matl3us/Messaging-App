@@ -7,9 +7,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-import { X } from "lucide-react";
+import { EllipsisVertical, X } from "lucide-react";
 import { Check } from "lucide-react";
-import { Menu } from "lucide-react";
 
 interface UserItemProps {
   id: string;
@@ -68,7 +67,7 @@ const UserItem = ({
         <DropdownMenu>
           <DropdownMenuTrigger>
             <button className="flex items-center p-[1px] hover:bg-background-800 rounded-md">
-              <Menu size="24" className="text-primary-700" />
+              <EllipsisVertical size="24" className="text-primary-700" />
             </button>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="text-center data-[state=open]:bg-background-900">

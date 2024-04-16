@@ -16,7 +16,7 @@ const Profile = () => {
 
   return (
     <div className="w-96 mx-auto mt-12 p-12 rounded-lg bg-background-900">
-      <h1 className="text-2xl font-medium">Profile page</h1>
+      <h1 className="text-2xl font-medium">Profile</h1>
       <div className="flex flex-col gap-2 mt-8 text-base text-background-50">
         {!profile.imageUrl ? (
           <Skeleton className="w-16 h-16 rounded-lg mb-4" />
