@@ -30,6 +30,40 @@ export async function POST(req: NextRequest) {
         status: 400,
       });
     }
+    console.log(user.id, friend.id);
+
+    const existingConversation = await db.conversation.findFirst({
+      where: {
+        AND: [
+          {
+            members: {
+              some: {
+                id: user.id,
+              },
+            },
+          },
+          {
+            members: {
+              some: {
+                id: friend.id,
+              },
+            },
+          },
+        ],
+      },
+    });
+
+    console.log(existingConversation);
+
+    if (existingConversation) {
+      return NextResponse.json(
+        {
+          msg: "Conversation already exists.",
+          location: `/conversations/${existingConversation.id}`,
+        },
+        { status: 409 }
+      );
+    }
 
     await db.conversation.create({
       data: {

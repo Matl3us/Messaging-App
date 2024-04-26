@@ -55,7 +55,7 @@ const ChatInput = ({ name, conversationID }: ChatInputProps) => {
                     <Input
                       disabled={loading}
                       className="text-base dark:bg-background-800"
-                      placeholder={`Message ${name}`}
+                      placeholder={`Message @${name}`}
                       {...field}
                     />
                     <div className="hover:text-primary-700 text-primary-600 rounded-lg relative right-10 top-1">

@@ -4,6 +4,7 @@ import ChatInput from "@/components/element/chat-input";
 import ChatMessages from "@/components/element/chat-messages";
 import { useEffect, useState } from "react";
 import { useConversation } from "@/hooks/useConversations";
+
 import { Info, Loader2, Phone } from "lucide-react";
 
 import Image from "next/image";
@@ -16,12 +17,6 @@ type UserData = {
   id: string;
   username: string;
   imageUrl: string;
-};
-
-const createConversationName = (otherUsers: Array<UserData>) => {
-  return otherUsers.length > 1
-    ? `@${otherUsers.join(", ")}`
-    : `@${otherUsers[0].username}`;
 };
 
 const Conversation = ({ params }: { params: IParams }) => {
@@ -48,9 +43,9 @@ const Conversation = ({ params }: { params: IParams }) => {
     const otherUsers = conversation?.conversation?.members.filter(
       (member) => member.id !== userData.id
     );
-    name = conversation?.name
-      ? conversation?.name
-      : createConversationName(otherUsers);
+    name = conversation?.conversation?.name
+      ? conversation?.conversation?.name
+      : otherUsers[0].username;
     imageUrl = otherUsers[0].imageUrl;
   }
 
@@ -73,7 +68,7 @@ const Conversation = ({ params }: { params: IParams }) => {
                 height="32"
                 unoptimized
               />
-              <p className="text-background-100 text-base">{name.slice(1)}</p>
+              <p className="text-background-100 text-base">{name}</p>
             </div>
             <div className="flex gap-2 items-center">
               <button>
@@ -94,6 +89,7 @@ const Conversation = ({ params }: { params: IParams }) => {
             name={name}
             userId={userData.id}
             conversationId={conversationId}
+            isGroup={conversation?.conversation?.isGroup}
             apiUrl="/api/messages"
             socketUrl="/api/socket/messages"
             imageUrl={imageUrl}

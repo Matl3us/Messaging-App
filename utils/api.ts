@@ -105,6 +105,22 @@ export const createPrivateConversation = async (id: string) => {
   });
 };
 
+export const createGroupConversation = async (name: string) => {
+  return fetch("/api/conversations/group", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ name }),
+  });
+};
+
+export const addUsersToGroup = async (id: string, userIds: Array<string>) => {
+  return fetch("/api/conversations/group", {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ conversationId: id, userIds }),
+  });
+};
+
 export const createMessage = async (
   values: z.infer<typeof messageSchema>,
   id: string

@@ -34,3 +34,11 @@ export const inviteSchema = z.object({
 export const messageSchema = z.object({
   message: z.string().max(512, "Message too long."),
 });
+
+export const groupCreationSchema = z.object({
+  name: z
+    .string()
+    .min(1, "Group name cannot be empty.")
+    .max(64, "Group name too long."),
+  userIds: z.array(z.string()),
+});

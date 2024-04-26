@@ -55,7 +55,7 @@ enum Status {
 
 model Conversation {
   id      String  @id @default(uuid())
-  name    String?
+  name    String? @db.VarChar(64)
   isGroup Boolean
 
   createdAt DateTime @default(now())

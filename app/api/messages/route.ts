@@ -5,7 +5,7 @@ import { getUserData } from "@/lib/jwt";
 import { Message } from "@prisma/client";
 import { db } from "@/lib/db";
 
-const MESSAGES_BATCH = 10;
+const MESSAGES_BATCH = 15;
 
 export async function GET(req: NextRequest) {
   const cookieStore = cookies();

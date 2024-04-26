@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 
-import { Fragment, useEffect, useRef } from "react";
+import { Fragment, useEffect, useRef, ElementRef } from "react";
 import { format } from "date-fns";
 
 import { Message, User } from "@prisma/client";
@@ -11,6 +11,7 @@ import { useChatQuery } from "@/hooks/useChatQuery";
 import { Loader2, ServerCrash } from "lucide-react";
 import ChatItem from "./chat-item";
 import { useChatSocket } from "@/hooks/useChatSocket";
+import { useChatScroll } from "@/hooks/useChatScroll";
 
 const DATE_FORMAT = "d MMM yyyy, HH:mm";
 
@@ -22,6 +23,7 @@ interface ChatMessagesProps {
   name: string;
   userId: string;
   conversationId: string;
+  isGroup: boolean;
   imageUrl: string;
   apiUrl: string;
   socketUrl: string;
@@ -31,12 +33,17 @@ const ChatMessages = ({
   name,
   userId,
   conversationId,
+  isGroup,
   imageUrl,
   apiUrl,
   socketUrl,
 }: ChatMessagesProps) => {
   const queryKey = `chat:${conversationId}`;
   const addKey = `chat:${conversationId}:messages`;
+
+  const chatRef = useRef<ElementRef<"div">>(null);
+  const bottomRef = useRef<ElementRef<"div">>(null);
+  const messagesRef = useRef<ElementRef<"div">>(null);
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, status } =
     useChatQuery({
@@ -45,15 +52,14 @@ const ChatMessages = ({
       paramValue: conversationId,
     });
   useChatSocket({ queryKey, addKey });
-
-  const messagesEndRef = useRef(null);
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView();
-  };
-
-  useEffect(() => {
-    scrollToBottom();
-  }, [data]);
+  useChatScroll({
+    chatRef,
+    bottomRef,
+    messagesRef,
+    loadMore: fetchNextPage,
+    shouldLoadMore: !isFetchingNextPage && !!hasNextPage,
+    count: data?.pages?.[0]?.items?.length ?? 0,
+  });
 
   if (status === "pending") {
     return (
@@ -74,22 +80,47 @@ const ChatMessages = ({
   }
 
   return (
-    <div className="flex flex-1 flex-col p-6 lg:w-full overflow-scroll">
-      <div className="flex flex-col items-center mt-auto">
-        <Image
-          className="rounded-lg"
-          src={imageUrl}
-          placeholder="empty"
-          alt="Avatar"
-          width="64"
-          height="64"
-          unoptimized
-        />
-        <p className="mb-12 mt-6 font-semibold text-background-500 ">
-          This is the start of the conversation with {name}
-        </p>
-      </div>
-      <div className="flex flex-col-reverse mt-auto">
+    <div
+      ref={chatRef}
+      className="flex flex-1 flex-col p-6 w-full overflow-scroll"
+    >
+      {!hasNextPage && (
+        <div className="flex flex-col items-center mt-auto">
+          <Image
+            className="rounded-lg"
+            src={imageUrl}
+            placeholder="empty"
+            alt="Avatar"
+            width="64"
+            height="64"
+            unoptimized
+          />
+          {isGroup ? (
+            <p className="mb-12 mt-6 font-semibold text-background-500 ">
+              This is the start of the conversation in the group {name}
+            </p>
+          ) : (
+            <p className="mb-12 mt-6 font-semibold text-background-500 ">
+              This is the start of the conversation with @{name}
+            </p>
+          )}
+        </div>
+      )}
+      {hasNextPage && (
+        <div className="flex justify-center">
+          {isFetchingNextPage ? (
+            <Loader2 className="h-32 w-8 text-primary-600 animate-spin" />
+          ) : (
+            <button
+              onClick={() => fetchNextPage()}
+              className="text-xs text-background-600"
+            >
+              Load previous messages
+            </button>
+          )}
+        </div>
+      )}
+      <div ref={messagesRef} className="flex flex-col-reverse mt-auto">
         {data?.pages?.map((group, i) => (
           <Fragment key={i}>
             {group.items.map((message: MessageWithMember) => (
@@ -107,7 +138,7 @@ const ChatMessages = ({
           </Fragment>
         ))}
       </div>
-      <div ref={messagesEndRef} />
+      <div ref={bottomRef} />
     </div>
   );
 };

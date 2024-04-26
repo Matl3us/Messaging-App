@@ -1,11 +1,14 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 
 import {
   fetchConversations,
   fetchConversation,
   createPrivateConversation,
+  createGroupConversation,
+  addUsersToGroup,
 } from "@/utils/api";
 
 interface ConversationItem {
@@ -93,11 +96,15 @@ export function useConversation(id: string): {
 }
 
 export function useCreatePrivateConv(refreshConversations: () => void) {
+  const router = useRouter();
   const acceptInvite = async (id: string) => {
     try {
       const response = await createPrivateConversation(id);
       if (response.ok) {
         refreshConversations();
+      } else if (response.status === 409) {
+        const data = await response.json();
+        router.push(data.location);
       }
     } catch (error) {
       console.error(error);
@@ -105,4 +112,25 @@ export function useCreatePrivateConv(refreshConversations: () => void) {
   };
 
   return acceptInvite;
+}
+
+export function useCreateGroup(refreshConversations: () => void) {
+  const router = useRouter();
+  const createGroup = async (name: string, userIds: Array<string>) => {
+    try {
+      const createResponse = await createGroupConversation(name);
+      const data = await createResponse.json();
+      if (createResponse.ok) {
+        const addResponse = await addUsersToGroup(data.id, userIds);
+        if (addResponse.ok) {
+          refreshConversations();
+          router.push(`/conversations/${data.id}`);
+        }
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  return createGroup;
 }

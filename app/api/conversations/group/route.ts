@@ -5,10 +5,20 @@ import type { NextRequest } from "next/server";
 import { getUserData, isUserAdmin } from "@/lib/jwt";
 import { db } from "@/lib/db";
 
-export async function POST() {
+export async function POST(req: Request) {
   const cookieStore = cookies();
   const token = cookieStore.get("token")?.value!;
 
+  let reqData;
+  try {
+    reqData = await req.json();
+  } catch (err) {
+    return new NextResponse("Invalid body data.", {
+      status: 400,
+    });
+  }
+
+  const { name } = reqData;
   try {
     const user = await getUserData(token);
     if (!user) {
@@ -17,9 +27,10 @@ export async function POST() {
       });
     }
 
-    await db.conversation.create({
+    const conversation = await db.conversation.create({
       data: {
         isGroup: true,
+        name,
         adminId: user.id,
         members: {
           connect: { id: user.id },
@@ -29,6 +40,7 @@ export async function POST() {
 
     return NextResponse.json({
       msg: "Success",
+      id: conversation.id,
     });
   } catch (err) {
     console.log(err);
