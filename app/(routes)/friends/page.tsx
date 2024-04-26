@@ -29,6 +29,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 import { inviteSchema } from "@/lib/zod-schemas";
+import { useCreatePrivateConv } from "@/hooks/useConversations";
 
 const Friends = () => {
   const { friends, loadingFriends, refreshFriends } = useFriends();
@@ -36,6 +37,7 @@ const Friends = () => {
 
   const createInvite = useCreateInvite(refreshInvites);
   const cancelSentInvite = useCancelSentInvite(refreshInvites);
+  const createConversation = useCreatePrivateConv();
 
   const deleteFriend = useDeleteFriend(refreshFriends);
 
@@ -117,7 +119,9 @@ const Friends = () => {
               username={e.user?.username}
               imageUrl={e.user?.imageUrl}
               type="friend"
-              onSubmit={() => {}}
+              onSubmit={() => {
+                createConversation(e.user?.id);
+              }}
               onDelete={deleteFriend}
             />
           ))}

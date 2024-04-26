@@ -96,14 +96,17 @@ export function useConversation(id: string): {
   return { conversation, loadingConversation };
 }
 
-export function useCreatePrivateConv(refreshConversations: () => void) {
+export function useCreatePrivateConv(refreshConversations?: () => void) {
   const router = useRouter();
   const acceptInvite = async (id: string) => {
     try {
       const response = await createPrivateConversation(id);
       const data = await response.json();
       if (response.ok) {
-        refreshConversations();
+        if (refreshConversations) {
+          refreshConversations();
+        }
+
         router.push(data.location);
       } else if (response.status === 409) {
         router.push(data.location);

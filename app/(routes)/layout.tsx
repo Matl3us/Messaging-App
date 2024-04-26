@@ -79,10 +79,16 @@ export default function RootLayout({
             <MessagesSquare size="32" />
             <p>Messages</p>
           </Link>
-          <div className="flex flex-col gap-2 items-center p-1 w-14 rounded-md hover:bg-background-800 cursor-pointer">
+          <Link
+            href="/settings"
+            className={cn(
+              "flex flex-col gap-2 items-center w-14 p-1 rounded-md hover:bg-background-800 cursor-pointer",
+              currentPage?.startsWith("/settings") && "text-primary-500"
+            )}
+          >
             <Settings size="32" />
             <p>Settings</p>
-          </div>
+          </Link>
         </div>
       </nav>
       <div className="flex flex-col w-screen">

@@ -9,10 +9,29 @@ import { useProfile } from "@/hooks/useProfile";
 import { useLogout } from "@/hooks/useLogout";
 
 import { LoadingSpinner } from "@/components/ui/spinner";
+import { useState } from "react";
+import { ClipboardCopy, EyeOff } from "lucide-react";
 
 const Profile = () => {
   const { profile, loading } = useProfile();
+  const [show, setShow] = useState(false);
   const logout = useLogout();
+
+  const changeInputState = () => {
+    if (show) {
+      setShow(false);
+    } else {
+      setShow(true);
+    }
+  };
+
+  const copyToClipboard = async () => {
+    try {
+      await navigator.clipboard.writeText(profile.friendCode);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
     <div className="w-96 mx-auto mt-12 p-12 rounded-lg bg-background-900">
@@ -39,12 +58,32 @@ const Profile = () => {
             <p>{profile.username}</p>
           )}
         </div>
-        <div className="flex justify-between">
+        <div className="flex justify-between items-center">
           <p>Friend code</p>
           {!profile.friendCode ? (
             <Skeleton className="w-32 h-5 rounded-lg mt-2" />
           ) : (
-            <p>{profile.friendCode}</p>
+            <div className="flex gap-2 items-center border border-background-700 p-1 rounded-md relative left-1">
+              <p className="pl-2">{show ? profile.friendCode : "**********"}</p>
+              <div className="flex">
+                <button>
+                  <EyeOff
+                    size="28"
+                    className="p-1 hover:bg-background-800 text-primary-600 hover:text-primary-500 rounded-lg"
+                    onClick={() => changeInputState()}
+                  />
+                </button>
+                <button>
+                  <ClipboardCopy
+                    size="28"
+                    className="p-1 hover:bg-background-800 text-primary-600 hover:text-primary-500 rounded-lg"
+                    onClick={() => {
+                      copyToClipboard();
+                    }}
+                  />
+                </button>
+              </div>
+            </div>
           )}
         </div>
       </div>
