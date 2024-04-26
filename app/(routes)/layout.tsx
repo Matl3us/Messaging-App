@@ -109,10 +109,15 @@ export default function RootLayout({
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="min-w-24 text-center">
                   <DropdownMenuLabel>
-                    <Link href="/profile">Profile</Link>
+                    <button className="w-24">
+                      <Link href="/profile">Profile</Link>
+                    </button>
                   </DropdownMenuLabel>
                   <DropdownMenuLabel>
-                    <button onClick={() => logout()} className="text-error">
+                    <button
+                      onClick={() => logout()}
+                      className="text-error w-24"
+                    >
                       Logout
                     </button>
                   </DropdownMenuLabel>

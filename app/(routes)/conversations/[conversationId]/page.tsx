@@ -8,6 +8,7 @@ import { useConversation } from "@/hooks/useConversations";
 import { Info, Loader2, Phone } from "lucide-react";
 
 import Image from "next/image";
+import GroupIcon from "@/components/ui/group-icon";
 
 interface IParams {
   conversationId: string;
@@ -40,12 +41,10 @@ const Conversation = ({ params }: { params: IParams }) => {
   let name = "";
   let imageUrl = "";
   if (!loadingConversation) {
-    const otherUsers = conversation?.conversation?.members.filter(
+    const otherUsers = conversation?.members.filter(
       (member) => member.id !== userData.id
     );
-    name = conversation?.conversation?.name
-      ? conversation?.conversation?.name
-      : otherUsers[0].username;
+    name = conversation?.name ? conversation?.name : otherUsers[0].username;
     imageUrl = otherUsers[0].imageUrl;
   }
 
@@ -57,18 +56,25 @@ const Conversation = ({ params }: { params: IParams }) => {
         </div>
       ) : (
         <>
-          <div className="flex items-center justify-between px-6 w-full h-12 border-b-2 border-background-900">
-            <div className="flex gap-3 items-center">
-              <Image
-                className="rounded-lg"
-                src={imageUrl}
-                placeholder="empty"
-                alt="Avatar"
-                width="32"
-                height="32"
-                unoptimized
-              />
-              <p className="text-background-100 text-base">{name}</p>
+          <div className="flex items-center justify-between px-6 w-full h-16 border-b-2 border-background-900">
+            <div className="flex gap-5 items-center">
+              {conversation?.isGroup ? (
+                <GroupIcon members={conversation?.members} size="small" />
+              ) : (
+                <Image
+                  className="rounded-lg"
+                  src={imageUrl}
+                  placeholder="empty"
+                  alt="Avatar"
+                  width="32"
+                  height="32"
+                  unoptimized
+                />
+              )}
+
+              <p className="text-background-100 text-base font-semibold">
+                {name}
+              </p>
             </div>
             <div className="flex gap-2 items-center">
               <button>
@@ -89,7 +95,8 @@ const Conversation = ({ params }: { params: IParams }) => {
             name={name}
             userId={userData.id}
             conversationId={conversationId}
-            isGroup={conversation?.conversation?.isGroup}
+            isGroup={conversation?.isGroup}
+            members={conversation?.members}
             apiUrl="/api/messages"
             socketUrl="/api/socket/messages"
             imageUrl={imageUrl}

@@ -2,6 +2,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 import { format } from "date-fns";
+import GroupIcon from "../ui/group-icon";
 
 const DATE_FORMAT = "d MMM yyyy, HH:mm";
 
@@ -58,20 +59,12 @@ const ConversationItem = ({
 
   return (
     <div
-      className="cursor-pointer flex items-center justify-between bg-background-800 hover:bg-background-700 rounded-md px-3 py-2"
+      className="cursor-pointer flex items-center justify-between bg-background-800 hover:bg-background-700 rounded-md px-4 py-2"
       onClick={() => router.push(`/conversations/${id}`)}
     >
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-4">
         {isGroup ? (
-          <Image
-            className="rounded-lg"
-            src="https://ui-avatars.com/api/?background=random&color=fff&name=user"
-            placeholder="empty"
-            alt="Avatar"
-            width="32"
-            height="32"
-            unoptimized
-          />
+          <GroupIcon members={members} size="small" />
         ) : (
           <Image
             className="rounded-lg"

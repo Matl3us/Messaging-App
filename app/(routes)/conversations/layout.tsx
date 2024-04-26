@@ -59,6 +59,7 @@ export default function RootLayout({
   const createGroup = useCreateGroup(refreshConversations);
 
   const [opened, setOpened] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
   const [friendName, setFriendName] = useState("");
   const [userData, setUserData] = useState<UserData>({
     id: "",
@@ -75,8 +76,10 @@ export default function RootLayout({
   });
 
   function onSubmit(values: z.infer<typeof groupCreationSchema>) {
-    createGroup(values.name, values.userIds);
+    createGroup(values.name, values.userIds, setDialogOpen);
   }
+
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
     const item = localStorage.getItem("userData");
@@ -84,6 +87,7 @@ export default function RootLayout({
       const obj = JSON.parse(item) as UserData;
       setUserData(obj);
     }
+    setIsMounted(true);
   }, []);
 
   const changeInputState = () => {
@@ -99,20 +103,22 @@ export default function RootLayout({
     item?.user?.username.includes(friendName)
   );
 
+  if (!isMounted) {
+    return null;
+  }
+
   return (
     <div className="flex h-full">
       <div className="min-w-80 p-8 bg-background-900">
         <div className="flex justify-between items-center">
           <h1 className="text-2xl font-medium">Chat</h1>
           <div className="flex gap-3">
-            <Dialog>
+            <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
               <DialogTrigger>
-                <button>
-                  <UserPlus
-                    size="36"
-                    className="relative top-1 pl-[6px] pr-[2px] hover:bg-background-700 bg-background-800 text-background-400 rounded-lg"
-                  />
-                </button>
+                <UserPlus
+                  size="36"
+                  className="relative top-1 pl-[6px] pr-[2px] hover:bg-background-700 bg-background-800 text-background-400 rounded-lg"
+                />
               </DialogTrigger>
               <DialogContent>
                 <DialogHeader>

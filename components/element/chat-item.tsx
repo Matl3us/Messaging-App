@@ -1,14 +1,17 @@
 "use client";
-
-import { User } from "@prisma/client";
-
 import Image from "next/image";
+
+interface UserItem {
+  id: string;
+  username: string;
+  imageUrl: string;
+}
 
 interface ChatItemProps {
   id: string;
   userId: string;
   content: string;
-  member: User;
+  member: UserItem;
   timestamp: string;
   fileUrl: string | null;
   socketUrl: string;

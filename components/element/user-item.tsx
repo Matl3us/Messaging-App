@@ -66,9 +66,9 @@ const UserItem = ({
       {type === "friend" && (
         <DropdownMenu>
           <DropdownMenuTrigger>
-            <button className="flex items-center p-[1px] hover:bg-background-800 rounded-md">
+            <div className="flex items-center p-[1px] hover:bg-background-800 rounded-md">
               <EllipsisVertical size="24" className="text-primary-700" />
-            </button>
+            </div>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="text-center data-[state=open]:bg-background-900">
             <DropdownMenuLabel>

@@ -12,11 +12,18 @@ import { Loader2, ServerCrash } from "lucide-react";
 import ChatItem from "./chat-item";
 import { useChatSocket } from "@/hooks/useChatSocket";
 import { useChatScroll } from "@/hooks/useChatScroll";
+import GroupIcon from "../ui/group-icon";
 
 const DATE_FORMAT = "d MMM yyyy, HH:mm";
 
+type UserData = {
+  id: string;
+  username: string;
+  imageUrl: string;
+};
+
 type MessageWithMember = Message & {
-  member: User;
+  member: UserData;
 };
 
 interface ChatMessagesProps {
@@ -24,6 +31,7 @@ interface ChatMessagesProps {
   userId: string;
   conversationId: string;
   isGroup: boolean;
+  members: Array<UserData>;
   imageUrl: string;
   apiUrl: string;
   socketUrl: string;
@@ -34,6 +42,7 @@ const ChatMessages = ({
   userId,
   conversationId,
   isGroup,
+  members,
   imageUrl,
   apiUrl,
   socketUrl,
@@ -55,12 +64,12 @@ const ChatMessages = ({
   useChatScroll({
     chatRef,
     bottomRef,
-    messagesRef,
     loadMore: fetchNextPage,
     shouldLoadMore: !isFetchingNextPage && !!hasNextPage,
     count: data?.pages?.[0]?.items?.length ?? 0,
   });
 
+  // @ts-ignore
   if (status === "pending") {
     return (
       <div className="flex flex-col flex-1 justify-center items-center">
@@ -86,23 +95,28 @@ const ChatMessages = ({
     >
       {!hasNextPage && (
         <div className="flex flex-col items-center mt-auto">
-          <Image
-            className="rounded-lg"
-            src={imageUrl}
-            placeholder="empty"
-            alt="Avatar"
-            width="64"
-            height="64"
-            unoptimized
-          />
           {isGroup ? (
-            <p className="mb-12 mt-6 font-semibold text-background-500 ">
-              This is the start of the conversation in the group {name}
-            </p>
+            <>
+              <GroupIcon members={members} size="large" />
+              <p className="mb-12 mt-6 font-semibold text-background-500 ">
+                This is the start of the conversation in the group {name}
+              </p>
+            </>
           ) : (
-            <p className="mb-12 mt-6 font-semibold text-background-500 ">
-              This is the start of the conversation with @{name}
-            </p>
+            <>
+              <Image
+                className="rounded-lg"
+                src={imageUrl}
+                placeholder="empty"
+                alt="Avatar"
+                width="64"
+                height="64"
+                unoptimized
+              />{" "}
+              <p className="mb-12 mt-6 font-semibold text-background-500 ">
+                This is the start of the conversation with @{name}
+              </p>
+            </>
           )}
         </div>
       )}

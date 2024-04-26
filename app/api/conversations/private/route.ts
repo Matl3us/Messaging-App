@@ -30,10 +30,10 @@ export async function POST(req: NextRequest) {
         status: 400,
       });
     }
-    console.log(user.id, friend.id);
 
     const existingConversation = await db.conversation.findFirst({
       where: {
+        isGroup: false,
         AND: [
           {
             members: {
@@ -53,8 +53,6 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    console.log(existingConversation);
-
     if (existingConversation) {
       return NextResponse.json(
         {
@@ -65,7 +63,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    await db.conversation.create({
+    const conversation = await db.conversation.create({
       data: {
         isGroup: false,
         adminId: user.id,
@@ -82,6 +80,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({
       msg: "Success",
+      location: `/conversations/${conversation.id}`,
     });
   } catch (err) {
     console.log(err);

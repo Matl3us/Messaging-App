@@ -16,7 +16,7 @@ interface ConversationItem {
   name?: string;
   isGroup: boolean;
   members: Array<UserItem>;
-  messages?: Array<MessageItem>;
+  messages: Array<MessageItem>;
 }
 
 interface UserItem {
@@ -73,6 +73,7 @@ export function useConversation(id: string): {
     id: "",
     isGroup: false,
     members: [],
+    messages: [],
   });
   const [loadingConversation, setLoading] = useState(true);
 
@@ -100,10 +101,11 @@ export function useCreatePrivateConv(refreshConversations: () => void) {
   const acceptInvite = async (id: string) => {
     try {
       const response = await createPrivateConversation(id);
+      const data = await response.json();
       if (response.ok) {
         refreshConversations();
+        router.push(data.location);
       } else if (response.status === 409) {
-        const data = await response.json();
         router.push(data.location);
       }
     } catch (error) {
@@ -116,7 +118,11 @@ export function useCreatePrivateConv(refreshConversations: () => void) {
 
 export function useCreateGroup(refreshConversations: () => void) {
   const router = useRouter();
-  const createGroup = async (name: string, userIds: Array<string>) => {
+  const createGroup = async (
+    name: string,
+    userIds: Array<string>,
+    setOpen: (open: boolean) => void
+  ) => {
     try {
       const createResponse = await createGroupConversation(name);
       const data = await createResponse.json();
@@ -124,6 +130,7 @@ export function useCreateGroup(refreshConversations: () => void) {
         const addResponse = await addUsersToGroup(data.id, userIds);
         if (addResponse.ok) {
           refreshConversations();
+          setOpen(false);
           router.push(`/conversations/${data.id}`);
         }
       }
