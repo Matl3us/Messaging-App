@@ -1,21 +1,33 @@
 "use client";
 
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+
 import Image from "next/image";
 
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 
-import { useProfile } from "@/hooks/useProfile";
+import { useProfile, useUpdateImage } from "@/hooks/useProfile";
 import { useLogout } from "@/hooks/useLogout";
 
 import { LoadingSpinner } from "@/components/ui/spinner";
 import { useState } from "react";
-import { ClipboardCopy, EyeOff } from "lucide-react";
+import { ClipboardCopy, CloudUpload, EyeOff, ImageUp } from "lucide-react";
+import { UploadButton } from "@uploadthing/react";
 
 const Profile = () => {
   const { profile, loading } = useProfile();
   const [show, setShow] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
+
   const logout = useLogout();
+  const updateImage = useUpdateImage();
 
   const changeInputState = () => {
     if (show) {
@@ -40,15 +52,43 @@ const Profile = () => {
         {!profile.imageUrl ? (
           <Skeleton className="w-16 h-16 rounded-lg mb-4" />
         ) : (
-          <Image
-            className="rounded-lg mb-4"
-            src={profile.imageUrl}
-            placeholder="empty"
-            alt="Avatar"
-            width="64"
-            height="64"
-            unoptimized
-          />
+          <div className="flex items-end">
+            <Image
+              className="rounded-lg mb-4"
+              src={profile.imageUrl}
+              placeholder="empty"
+              alt="Avatar"
+              width="64"
+              height="64"
+              unoptimized
+            />
+            <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+              <DialogTrigger>
+                <ImageUp
+                  size={32}
+                  className="rounded-md hover:bg-background-800 text-primary-500 p-1"
+                />
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle className="mb-4">Upload image</DialogTitle>
+                  <div className="mx-2 p-6 border rounded-md border-background-500 flex flex-col items-center justify-center">
+                    <CloudUpload size={48} />
+                    <UploadButton
+                      className="text-background-100 p-1 rounded-md hover:bg-background-900"
+                      endpoint="messageImage"
+                      onClientUploadComplete={(res) => {
+                        updateImage(res[0].url);
+                      }}
+                      onUploadError={(error: Error) => {
+                        alert(`ERROR! ${error.message}`);
+                      }}
+                    />
+                  </div>
+                </DialogHeader>
+              </DialogContent>
+            </Dialog>
+          </div>
         )}
         <div className="flex justify-between">
           <p>Username</p>

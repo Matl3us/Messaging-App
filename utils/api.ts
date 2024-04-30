@@ -125,14 +125,24 @@ export const createMessage = async (
   values: z.infer<typeof messageSchema>,
   id: string
 ) => {
-  const { message } = values;
+  const { message, fileUrl } = values;
 
   return fetch(
     "/api/socket/messages?" + new URLSearchParams({ conversationId: id }),
     {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ content: message }),
+      body: JSON.stringify({ content: message, fileUrl }),
     }
   );
+};
+
+export const updateProfileImage = async (imageUrl: string) => {
+  console.log(imageUrl);
+  
+  return fetch("/api/profile", {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ imageUrl }),
+  });
 };

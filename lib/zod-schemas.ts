@@ -33,6 +33,7 @@ export const inviteSchema = z.object({
 
 export const messageSchema = z.object({
   message: z.string().max(512, "Message too long."),
+  fileUrl: z.string().nullable(),
 });
 
 export const groupCreationSchema = z.object({

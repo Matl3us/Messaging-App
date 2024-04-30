@@ -10,6 +10,7 @@ export function useLogout() {
   const logout = async () => {
     try {
       await logoutUser();
+      localStorage.removeItem("userData");
       router.push("/");
     } catch (error) {
       console.error(error);

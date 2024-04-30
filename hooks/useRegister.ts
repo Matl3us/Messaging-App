@@ -21,6 +21,8 @@ export const useRegister = () => {
       if (response.ok) {
         const response = await loginUser(values);
         if (response.ok) {
+          const data = await response.json();
+          localStorage.setItem("userData", JSON.stringify(data.data));
           router.push("/");
         } else {
           form.setError("password", {

@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { fetchProfile } from "@/utils/api";
+import { fetchProfile, updateProfileImage } from "@/utils/api";
+import { useRouter } from "next/navigation";
 
 interface Profile {
   id: string;
@@ -36,4 +37,25 @@ export function useProfile(): { profile: Profile; loading: boolean } {
   }, []);
 
   return { profile, loading };
+}
+
+export function useUpdateImage() {
+  const router = useRouter();
+
+  const updateImage = async (imageUrl: string) => {
+    try {
+      const response = await updateProfileImage(imageUrl);
+      if (response.ok) {
+        router.push("/");
+      } else {
+        const text = await response.text();
+        console.log(text);
+        
+      }
+    } catch (error) {
+      console.error("Error updating image:", error);
+    }
+  };
+
+  return updateImage;
 }
