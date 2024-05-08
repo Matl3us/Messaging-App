@@ -79,6 +79,11 @@ export default async function handler(
     const conversationKey = `chat:${conversationId}:messages`;
     res?.socket?.server?.io?.emit(conversationKey, message);
 
+    for (let mem of conversation.members) {
+      const messageKey = `user:${mem.id}:received:message`;
+      res?.socket?.server?.io?.emit(messageKey);
+    }
+
     return res.status(200).json({ msg: "Message sent" });
   } catch (error) {
     console.log("[MESSAGE_POST]", error);

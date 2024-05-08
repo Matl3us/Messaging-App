@@ -45,7 +45,7 @@ export const fetchInvitesReceived = async () => {
 export const postInvite = async (values: z.infer<typeof inviteSchema>) => {
   const { friendCode } = values;
 
-  return fetch("/api/friends/invites", {
+  return fetch("/api/socket/invites", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ friendCode }),
@@ -139,7 +139,7 @@ export const createMessage = async (
 
 export const updateProfileImage = async (imageUrl: string) => {
   console.log(imageUrl);
-  
+
   return fetch("/api/profile", {
     method: "PUT",
     headers: { "Content-Type": "application/json" },

@@ -16,6 +16,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useLogout } from "@/hooks/useLogout";
+import { useNavigationSocket } from "@/hooks/useNavigationSocket";
 
 type UserData = {
   id: string;
@@ -34,6 +35,21 @@ export default function RootLayout({
     username: "",
     imageUrl: "",
   });
+
+  const [notificationCount, setNotificationCount] = useState(0);
+  const [messageCount, setMessageCount] = useState(0);
+  const notificationKey = `user:${userData.id}:notification`;
+  const messageKey = `user:${userData.id}:received:message`;
+  useNavigationSocket({
+    currentPage,
+    notificationKey,
+    messageKey,
+    notificationCount,
+    setNotificationCount,
+    messageCount,
+    setMessageCount,
+  });
+
   const logout = useLogout();
 
   useEffect(() => {
@@ -42,7 +58,15 @@ export default function RootLayout({
       const obj = JSON.parse(item) as UserData;
       setUserData(obj);
     }
-  }, []);
+
+    if (currentPage === "/") {
+      setNotificationCount(0);
+    }
+
+    if (currentPage === "/conversations") {
+      setMessageCount(0);
+    }
+  }, [currentPage]);
 
   return (
     <div className="flex h-screen overflow-hidden bg-background-900">
@@ -52,12 +76,21 @@ export default function RootLayout({
           <Link
             href="/"
             className={cn(
-              "flex flex-col gap-2 items-center w-14 p-1 rounded-md hover:bg-background-800 cursor-pointer",
+              "flex gap-2 items-center w-14 p-1 rounded-md hover:bg-background-800 cursor-pointer",
               currentPage === "/" && "text-primary-500"
             )}
           >
-            <Home size="32" />
-            <p>Home</p>
+            <div className="relative left-2 flex flex-col gap-2">
+              <Home size="32" />
+              <p>Home</p>
+            </div>
+            {notificationCount > 0 && (
+              <div className="relative bottom-6 right-[3px] p-[3px] rounded-md bg-error">
+                <p className="font-bold text-background-200 text-sm">
+                  {notificationCount}
+                </p>
+              </div>
+            )}
           </Link>
           <Link
             href="/friends"
@@ -72,12 +105,21 @@ export default function RootLayout({
           <Link
             href="/conversations"
             className={cn(
-              "flex flex-col gap-2 items-center w-14 p-1 rounded-md hover:bg-background-800 cursor-pointer",
+              "flex gap-2 items-center w-14 p-1 rounded-md hover:bg-background-800 cursor-pointer",
               currentPage?.startsWith("/conversations") && "text-primary-500"
             )}
           >
-            <MessagesSquare size="32" />
-            <p>Messages</p>
+            <div className="flex flex-col gap-2">
+              <MessagesSquare className="relative left-2" size="32" />
+              <p>Messages</p>
+            </div>
+            {messageCount > 0 && (
+              <div className="relative right-[20px] bottom-6 p-[3px] rounded-md bg-error">
+                <p className="font-bold text-background-200 text-sm">
+                  {messageCount}
+                </p>
+              </div>
+            )}
           </Link>
           <Link
             href="/settings"
