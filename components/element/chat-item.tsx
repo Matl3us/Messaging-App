@@ -40,7 +40,7 @@ const ChatItem = ({
               height="26"
               unoptimized
             />
-            <div className="max-w-[650px]">
+            <div className="max-w-[550px]">
               {fileUrl ? (
                 <a target="_blank" href={fileUrl} rel="noopener noreferrer">
                   <img

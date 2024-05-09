@@ -17,7 +17,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="bg-background-950 text-text-400 text-lg h-full">
+      <body className="bg-background-950 text-text-400 text-lg h-full overflow-hidden">
         <SocketProvider>
           <QueryProvider>{children}</QueryProvider>
         </SocketProvider>

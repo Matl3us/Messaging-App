@@ -108,7 +108,7 @@ export default function RootLayout({
   }
 
   return (
-    <div className="flex h-full">
+    <div className="flex h-full overflow-hidden">
       <div className="min-w-80 p-8 bg-background-900">
         <div className="flex justify-between items-center">
           <h1 className="text-2xl font-medium">Chat</h1>
@@ -117,7 +117,7 @@ export default function RootLayout({
               <DialogTrigger>
                 <UserPlus
                   size="36"
-                  className="relative top-1 pl-[6px] pr-[2px] hover:bg-background-700 bg-background-800 text-background-400 rounded-lg"
+                  className="pl-[6px] pr-[2px] hover:bg-background-700 bg-background-800 text-background-400 rounded-lg"
                 />
               </DialogTrigger>
               <DialogContent>

@@ -71,7 +71,7 @@ export default function RootLayout({
   return (
     <div className="flex h-screen overflow-hidden bg-background-900">
       <nav className="w-1/6 min-w-16 max-w-16 flex flex-col items-center">
-        <Shell size="36" className="ml-1 mt-2 text-accent-500" />
+        <Shell size="36" className="ml-1 mt-2 text-primary-500" />
         <div className="mt-16 flex flex-col items-center gap-6 text-xs text-background-500">
           <Link
             href="/"
@@ -135,7 +135,7 @@ export default function RootLayout({
       </nav>
       <div className="flex flex-col w-screen">
         <nav className="h-12 pl-1 pr-6 flex gap-8 justify-between items-center">
-          <p className="text-accent-500 text-xl font-semibold">Logo</p>
+          <p className="text-primary-500 text-xl font-semibold">Logo</p>
           <div className="flex gap-8 items-center">
             {userData.imageUrl && (
               <DropdownMenu>
