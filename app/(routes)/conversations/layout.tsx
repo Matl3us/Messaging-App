@@ -18,7 +18,6 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -39,6 +38,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { groupCreationSchema } from "@/lib/zod-schemas";
+import { useConversationsSocket } from "@/hooks/useConversationsSocket";
 
 type UserData = {
   id: string;
@@ -52,8 +52,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   const { friends, loadingFriends } = useFriends();
-  const { conversations, loadingConversations, refreshConversations } =
-    useConversations();
+  const {
+    conversations,
+    setConversations,
+    loadingConversations,
+    refreshConversations,
+  } = useConversations();
+
+  useConversationsSocket({ conversations, setConversations });
 
   const createInvite = useCreatePrivateConv(refreshConversations);
   const createGroup = useCreateGroup(refreshConversations);

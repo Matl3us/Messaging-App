@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Dispatch, SetStateAction } from "react";
 
 import {
   fetchConversations,
@@ -35,6 +35,7 @@ interface MessageItem {
 
 export function useConversations(): {
   conversations: Array<ConversationItem>;
+  setConversations: Dispatch<SetStateAction<ConversationItem[]>>;
   loadingConversations: boolean;
   refreshConversations: () => void;
 } {
@@ -62,7 +63,12 @@ export function useConversations(): {
     fetchConversationsData();
   };
 
-  return { conversations, loadingConversations, refreshConversations };
+  return {
+    conversations,
+    setConversations,
+    loadingConversations,
+    refreshConversations,
+  };
 }
 
 export function useConversation(id: string): {

@@ -32,18 +32,29 @@ export default async function handler(
       return res.status(400).json({ msg: "Invalid request" });
     }
 
-    await db.friendRequest.create({
+    const request = await db.friendRequest.create({
       data: {
         senderId: sender.id,
         receiverId: receiver.id,
         status: "PENDING",
       },
+      select: {
+        id: true,
+        sender: {
+          select: {
+            id: true,
+            username: true,
+            imageUrl: true,
+          },
+        },
+      },
     });
 
-    const conversationKey = `user:${receiver.id}:notification`;
-    console.log("Sent: " + conversationKey);
+    const navigationKey = `user:${receiver.id}:notification`;
+    res?.socket?.server?.io?.emit(navigationKey);
 
-    res?.socket?.server?.io?.emit(conversationKey);
+    const notificationKey = `user:${receiver.id}:notification:add`;
+    res?.socket?.server?.io?.emit(notificationKey, request);
 
     return res.status(200).json({ msg: "Invite sent" });
   } catch (err) {

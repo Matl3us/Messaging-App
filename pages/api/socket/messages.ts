@@ -6,6 +6,24 @@ import { NextApiResponseServerIO } from "@/types";
 
 import { NextApiRequest } from "next";
 
+type MessageItem = {
+  id: string;
+  content: string;
+  fileUrl: string;
+  createdAt: Date;
+  member: UserItem;
+};
+
+type MessageDto = MessageItem & {
+  conversationId: string;
+};
+
+type UserItem = {
+  id: string;
+  username: string;
+  imageUrl: string;
+};
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponseServerIO
@@ -82,6 +100,9 @@ export default async function handler(
     for (let mem of conversation.members) {
       const messageKey = `user:${mem.id}:received:message`;
       res?.socket?.server?.io?.emit(messageKey);
+
+      const messageAddKey = `user:${mem.id}:message:add`;
+      res?.socket?.server?.io?.emit(messageAddKey, message as MessageDto);
     }
 
     return res.status(200).json({ msg: "Message sent" });

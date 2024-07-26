@@ -1,7 +1,7 @@
 "use client";
 
 import { useToast } from "@/components/ui/use-toast";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Dispatch, SetStateAction } from "react";
 import { z } from "zod";
 
 import {
@@ -45,6 +45,7 @@ interface NotificationItem {
 
 export function useFriends(): {
   friends: Array<FriendItem>;
+  setFriends: Dispatch<SetStateAction<FriendItem[]>>;
   loadingFriends: boolean;
   refreshFriends: () => void;
 } {
@@ -69,11 +70,12 @@ export function useFriends(): {
     fetchFriendsData();
   };
 
-  return { friends, loadingFriends, refreshFriends };
+  return { friends, setFriends, loadingFriends, refreshFriends };
 }
 
 export function useInvitesSent(): {
   invites: Array<InviteItem>;
+  setInvites: Dispatch<SetStateAction<InviteItem[]>>;
   loadingInvites: boolean;
   refreshInvites: () => void;
 } {
@@ -100,11 +102,12 @@ export function useInvitesSent(): {
     fetchInvitesData();
   };
 
-  return { invites, loadingInvites, refreshInvites };
+  return { invites, setInvites, loadingInvites, refreshInvites };
 }
 
 export function useInvitesReceived(): {
   invites: Array<NotificationItem>;
+  setInvites: Dispatch<SetStateAction<NotificationItem[]>>;
   loadingInvites: boolean;
   refreshInvites: () => void;
 } {
@@ -132,7 +135,7 @@ export function useInvitesReceived(): {
     fetchInvitesData();
   };
 
-  return { invites, loadingInvites, refreshInvites };
+  return { invites, setInvites, loadingInvites, refreshInvites };
 }
 
 export function useCreateInvite(refreshInvites: () => void) {

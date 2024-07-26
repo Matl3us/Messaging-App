@@ -53,25 +53,25 @@ export const postInvite = async (values: z.infer<typeof inviteSchema>) => {
 };
 
 export const deleteSentInvite = async (id: string) => {
-  return fetch("/api/friends/invites/created?" + new URLSearchParams({ id }), {
+  return fetch("/api/socket/invites/cancel?" + new URLSearchParams({ id }), {
     method: "PUT",
   });
 };
 
 export const deleteReceivedInvite = async (id: string) => {
-  return fetch("/api/friends/invites/received?" + new URLSearchParams({ id }), {
+  return fetch("/api/socket/invites/reject?" + new URLSearchParams({ id }), {
     method: "PUT",
   });
 };
 
 export const acceptReceivedInvite = async (id: string) => {
-  return fetch("/api/friends/invites?" + new URLSearchParams({ id }), {
+  return fetch("/api/socket/friends/add?" + new URLSearchParams({ id }), {
     method: "PUT",
   });
 };
 
 export const deleteFriendReq = async (id: string) => {
-  return fetch("/api/friends/list?" + new URLSearchParams({ id }), {
+  return fetch("/api/socket/friends/remove?" + new URLSearchParams({ id }), {
     method: "PUT",
   });
 };

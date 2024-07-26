@@ -8,9 +8,12 @@ import {
   useInvitesReceived,
   useRejectInvite,
 } from "@/hooks/useFriends";
+import { useNotificationSocket } from "@/hooks/useNotificationSocket";
 
 const Home = () => {
-  const { invites, loadingInvites, refreshInvites } = useInvitesReceived();
+  const { invites, setInvites, loadingInvites, refreshInvites } =
+    useInvitesReceived();
+  useNotificationSocket({ invites, setInvites });
 
   const acceptInvite = useAcceptInvite(refreshInvites);
   const rejectInvite = useRejectInvite(refreshInvites);

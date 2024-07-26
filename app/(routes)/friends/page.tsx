@@ -30,10 +30,14 @@ import { z } from "zod";
 
 import { inviteSchema } from "@/lib/zod-schemas";
 import { useCreatePrivateConv } from "@/hooks/useConversations";
+import { useFriendsSocket } from "@/hooks/useFriendsSocket";
 
 const Friends = () => {
-  const { friends, loadingFriends, refreshFriends } = useFriends();
-  const { invites, loadingInvites, refreshInvites } = useInvitesSent();
+  const { friends, setFriends, loadingFriends, refreshFriends } = useFriends();
+  const { invites, setInvites, loadingInvites, refreshInvites } =
+    useInvitesSent();
+
+  useFriendsSocket({ friends, setFriends, invites, setInvites });
 
   const createInvite = useCreateInvite(refreshInvites);
   const cancelSentInvite = useCancelSentInvite(refreshInvites);
