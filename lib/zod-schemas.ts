@@ -43,3 +43,17 @@ export const groupCreationSchema = z.object({
     .max(64, "Group name too long."),
   userIds: z.array(z.string()),
 });
+
+export const passwordChangeSchema = z
+  .object({
+    oldPassword: z.string(),
+    newPassword: z
+      .string()
+      .min(8, "Password has to be at least 8 characters long.")
+      .max(64, "Password cannot be longer than 64 characters."),
+    newPasswordConf: z.string(),
+  })
+  .refine((data) => data.newPassword === data.newPasswordConf, {
+    message: "Passwords don't match.",
+    path: ["newPasswordConf"],
+  });

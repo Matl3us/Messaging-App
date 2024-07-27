@@ -14,20 +14,51 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 
 import { useProfile, useUpdateImage } from "@/hooks/useProfile";
-import { useLogout } from "@/hooks/useLogout";
 
 import { LoadingSpinner } from "@/components/ui/spinner";
 import { useState } from "react";
 import { ClipboardCopy, CloudUpload, EyeOff, ImageUp } from "lucide-react";
 import { UploadButton } from "@uploadthing/react";
 
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { passwordChangeSchema } from "@/lib/zod-schemas";
+import { usePasswordChange } from "@/hooks/usePasswordChange";
+
 const Profile = () => {
-  const { profile, loading } = useProfile();
+  const { profile, loadingProfile } = useProfile();
   const [show, setShow] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [changePassOpen, setChangePass] = useState(false);
 
-  const logout = useLogout();
+  const { changePassword, loadingChange } = usePasswordChange();
+
   const updateImage = useUpdateImage();
+
+  const form = useForm<z.infer<typeof passwordChangeSchema>>({
+    resolver: zodResolver(passwordChangeSchema),
+    defaultValues: {
+      oldPassword: "",
+      newPassword: "",
+      newPasswordConf: "",
+    },
+  });
+
+  function onSubmit(values: z.infer<typeof passwordChangeSchema>) {
+    changePassword(values, form);
+    setChangePass(false);
+  }
 
   const changeInputState = () => {
     if (show) {
@@ -127,10 +158,66 @@ const Profile = () => {
           )}
         </div>
       </div>
-      {loading && <LoadingSpinner className="mt-4" />}
-      <Button className="mt-8" onClick={() => logout()}>
-        Logout
-      </Button>
+      {(loadingProfile || loadingChange) && <LoadingSpinner className="mt-4" />}
+      <div className="mt-4">
+        {changePassOpen && (
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+              <FormField
+                control={form.control}
+                name="oldPassword"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Old password</FormLabel>
+                    <FormControl>
+                      <Input type="password" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="newPassword"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>New password</FormLabel>
+                    <FormControl>
+                      <Input type="password" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="newPasswordConf"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>New password confirmation</FormLabel>
+                    <FormControl>
+                      <Input type="password" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <div className="flex gap-4">
+                <Button type="submit">Submit</Button>
+              </div>
+            </form>
+          </Form>
+        )}
+        <Button
+          className="mt-4"
+          onClick={() => {
+            setChangePass(!changePassOpen);
+            form.reset();
+          }}
+        >
+          {changePassOpen ? <span>Cancel</span> : <span>Change Password</span>}
+        </Button>
+      </div>
     </div>
   );
 };

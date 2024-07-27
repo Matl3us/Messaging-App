@@ -12,7 +12,7 @@ interface Profile {
   friendCode: string;
 }
 
-export function useProfile(): { profile: Profile; loading: boolean } {
+export function useProfile(): { profile: Profile; loadingProfile: boolean } {
   const [profile, setProfile] = useState({
     id: "",
     email: "",
@@ -20,7 +20,7 @@ export function useProfile(): { profile: Profile; loading: boolean } {
     imageUrl: "",
     friendCode: "",
   });
-  const [loading, setLoading] = useState(true);
+  const [loadingProfile, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchPostsData() {
@@ -36,7 +36,7 @@ export function useProfile(): { profile: Profile; loading: boolean } {
     fetchPostsData();
   }, []);
 
-  return { profile, loading };
+  return { profile, loadingProfile };
 }
 
 export function useUpdateImage() {
@@ -50,7 +50,6 @@ export function useUpdateImage() {
       } else {
         const text = await response.text();
         console.log(text);
-        
       }
     } catch (error) {
       console.error("Error updating image:", error);
