@@ -83,6 +83,7 @@ export default function RootLayout({
 
   function onSubmit(values: z.infer<typeof groupCreationSchema>) {
     createGroup(values.name, values.userIds, setDialogOpen);
+    refreshConversations();
   }
 
   const [isMounted, setIsMounted] = useState(false);

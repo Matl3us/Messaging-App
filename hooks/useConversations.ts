@@ -48,6 +48,20 @@ export function useConversations(): {
     try {
       const fetchedConversations: Array<ConversationItem> =
         await fetchConversations();
+      fetchedConversations.sort((a, b) => {
+        if (a.messages.length === 0) {
+          return -1;
+        }
+
+        if (b.messages.length === 0) {
+          return 1;
+        }
+
+        return (
+          new Date(b.messages[0].createdAt).getTime() -
+          new Date(a.messages[0].createdAt).getTime()
+        );
+      });
       setConversations(fetchedConversations);
       setLoading(false);
     } catch (error) {
@@ -142,6 +156,26 @@ export function useCreateGroup(refreshConversations: () => void) {
           setOpen(false);
           router.push(`/conversations/${data.id}`);
         }
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  return createGroup;
+}
+
+export function useAddToGroup(refreshConversations: () => void) {
+  const createGroup = async (
+    groupId: string,
+    userIds: Array<string>,
+    setOpen: (open: boolean) => void
+  ) => {
+    try {
+      const addResponse = await addUsersToGroup(groupId, userIds);
+      if (addResponse.ok) {
+        refreshConversations();
+        setOpen(false);
       }
     } catch (error) {
       console.error(error);

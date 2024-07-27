@@ -121,16 +121,6 @@ export default function RootLayout({
               </div>
             )}
           </Link>
-          <Link
-            href="/settings"
-            className={cn(
-              "flex flex-col gap-2 items-center w-14 p-1 rounded-md hover:bg-background-800 cursor-pointer",
-              currentPage?.startsWith("/settings") && "text-primary-500"
-            )}
-          >
-            <Settings size="32" />
-            <p>Settings</p>
-          </Link>
         </div>
       </nav>
       <div className="flex flex-col w-screen">

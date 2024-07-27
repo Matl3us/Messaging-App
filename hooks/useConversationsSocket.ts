@@ -63,20 +63,33 @@ export const useConversationsSocket = ({
 
     socket.on(messageAddKey, (message: MessageDto) => {
       if (message) {
-        setConversations(
-          conversations.map((c) => {
-            if (c.id === message.conversationId) {
-              c.messages.unshift({
-                id: message.id,
-                content: message.content,
-                fileUrl: message.fileUrl,
-                createdAt: message.createdAt,
-                member: message.member,
-              });
-            }
-            return c;
-          })
-        );
+        const newConversations = conversations.map((c) => {
+          if (c.id === message.conversationId) {
+            c.messages.unshift({
+              id: message.id,
+              content: message.content,
+              fileUrl: message.fileUrl,
+              createdAt: message.createdAt,
+              member: message.member,
+            });
+          }
+          return c;
+        });
+        newConversations.sort((a, b) => {
+          if (a.messages.length === 0) {
+            return -1;
+          }
+
+          if (b.messages.length === 0) {
+            return 1;
+          }
+
+          return (
+            new Date(b.messages[0].createdAt).getTime() -
+            new Date(a.messages[0].createdAt).getTime()
+          );
+        });
+        setConversations(newConversations);
       }
     });
 
