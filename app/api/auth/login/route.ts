@@ -40,7 +40,7 @@ export async function POST(req: Request) {
     const secret = process.env.SECRET!;
 
     const token = jwt.sign({ sub: user.id, username: user.username }, secret, {
-      expiresIn: 60 * 60,
+      expiresIn: 12 * 60 * 60,
     });
 
     const response = NextResponse.json({
@@ -56,7 +56,7 @@ export async function POST(req: Request) {
       name: "token",
       value: token,
       path: "/",
-      maxAge: 86400,
+      maxAge: 12 * 60 * 60,
       httpOnly: true,
       sameSite: "strict",
     });
