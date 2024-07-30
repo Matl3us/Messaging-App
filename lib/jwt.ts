@@ -18,6 +18,7 @@ export const getUserData = async (token: string) => {
       username: true,
       imageUrl: true,
       friendCode: true,
+      status: true,
     },
   });
 

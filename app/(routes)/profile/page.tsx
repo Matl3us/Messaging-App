@@ -17,7 +17,14 @@ import { useProfile, useUpdateImage } from "@/hooks/useProfile";
 
 import { LoadingSpinner } from "@/components/ui/spinner";
 import { useState } from "react";
-import { ClipboardCopy, CloudUpload, EyeOff, ImageUp } from "lucide-react";
+import {
+  Circle,
+  CircleMinus,
+  ClipboardCopy,
+  CloudUpload,
+  EyeOff,
+  ImageUp,
+} from "lucide-react";
 import { UploadButton } from "@uploadthing/react";
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -93,6 +100,24 @@ const Profile = () => {
               height="64"
               unoptimized
             />
+            {profile.status === "ONLINE" && (
+              <span className="relative right-2 bottom-2 w-5 h-5 rounded-full bg-success" />
+            )}
+            {profile.status === "AWAY" && (
+              <span className="relative right-2 bottom-2 w-5 h-5 rounded-full bg-warning" />
+            )}
+            {profile.status === "DONTDISTURB" && (
+              <CircleMinus
+                className="relative right-2 bottom-2 text-error rounded-full bg-black"
+                size="20"
+              />
+            )}
+            {profile.status === "OFFLINE" && (
+              <Circle
+                className="relative right-2 bottom-2 text-background-600 rounded-full bg-black"
+                size="20"
+              />
+            )}
             <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
               <DialogTrigger>
                 <ImageUp

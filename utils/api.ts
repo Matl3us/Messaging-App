@@ -146,11 +146,18 @@ export const createMessage = async (
 };
 
 export const updateProfileImage = async (imageUrl: string) => {
-  console.log(imageUrl);
-
   return fetch("/api/profile", {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ imageUrl }),
   });
 };
+
+export const updateUserStatus = async (status: number) => {
+  return fetch("/api/profile/status", {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ status }),
+  });
+};
+

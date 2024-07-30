@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { fetchProfile, updateProfileImage } from "@/utils/api";
+import { fetchProfile, updateProfileImage, updateUserStatus } from "@/utils/api";
 import { useRouter } from "next/navigation";
 
 interface Profile {
@@ -10,6 +10,7 @@ interface Profile {
   username: string;
   imageUrl: string;
   friendCode: string;
+  status: "ONLINE" | "AWAY" | "DONTDISTURB" | "OFFLINE";
 }
 
 export function useProfile(): { profile: Profile; loadingProfile: boolean } {
@@ -25,7 +26,7 @@ export function useProfile(): { profile: Profile; loadingProfile: boolean } {
   useEffect(() => {
     async function fetchPostsData() {
       try {
-        const fetchedProfile: Profile = await fetchProfile();
+        const fetchedProfile: Profile = await fetchProfile();     
         setProfile(fetchedProfile);
         setLoading(false);
       } catch (error) {
@@ -57,4 +58,16 @@ export function useUpdateImage() {
   };
 
   return updateImage;
+}
+
+export function useUpdateStatus() {
+  const changeStatus = async (status: number) => {
+    try {
+      await updateUserStatus(status);
+    } catch (error) {
+      console.error("Error updating user status:", error);
+    }
+  };
+
+  return changeStatus;
 }

@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useLogout } from "@/hooks/useLogout";
 import { useNavigationSocket } from "@/hooks/useNavigationSocket";
+import UserStatus from "@/components/element/user-status";
 
 type UserData = {
   id: string;
@@ -162,6 +163,7 @@ export default function RootLayout({
                 </DropdownMenuContent>
               </DropdownMenu>
             )}
+            <UserStatus />
             <SocketIndicator />
           </div>
         </nav>

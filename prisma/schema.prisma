@@ -13,6 +13,13 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum UserStatus {
+  ONLINE
+  AWAY
+  DONTDISTURB
+  OFFLINE
+}
+
 model User {
   id         String @id @default(uuid())
   username   String @unique @db.VarChar(64)
@@ -30,6 +37,8 @@ model User {
   createdConversations Conversation[] @relation("admin")
 
   messages Message[]
+
+  status UserStatus @default(OFFLINE)
 }
 
 model FriendRequest {
@@ -42,10 +51,10 @@ model FriendRequest {
   receiver   User   @relation("receiver", fields: [receiverId], references: [id])
   receiverId String
 
-  status Status
+  status InviteStatus
 }
 
-enum Status {
+enum InviteStatus {
   PENDING
   ACCEPTED
   REJECTED
