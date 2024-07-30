@@ -95,6 +95,7 @@ const ChatInput = ({ name, conversationID }: ChatInputProps) => {
                       </DialogContent>
                     </Dialog>
                     <Input
+                      autoComplete="off"
                       disabled={loading}
                       className="px-12 text-base dark:bg-background-800"
                       placeholder={`Message @${name}`}

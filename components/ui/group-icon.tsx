@@ -15,6 +15,25 @@ interface GroupIconProps {
 const GroupIcon = ({ members, size }: GroupIconProps) => {
   const imageSize = size === "small" ? 26 : 48;
 
+  if (members.length === 1) {
+    const iconSize = size === "small" ? 32 : 64;
+    return (
+      <div className={cn("w-[64px]", size === "small" && "w-[32px]")}>
+        <Image
+          className={cn(
+            "rounded-lg border border-background-700"
+          )}
+          src={members[0].imageUrl}
+          placeholder="empty"
+          alt="Avatar"
+          width={iconSize}
+          height={iconSize}
+          unoptimized
+        />
+      </div>
+    )
+  }
+
   if (members.length < 3) {
     return (
       <div className={cn("w-[64px]", size === "small" && "w-[32px]")}>

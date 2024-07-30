@@ -121,6 +121,14 @@ export const addUsersToGroup = async (id: string, userIds: Array<string>) => {
   });
 };
 
+export const updateGroupName= async (conversationId: string, name: string) => {
+  return fetch("/api/conversations/group/name", {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ conversationId, name }),
+  });
+};
+
 export const createMessage = async (
   values: z.infer<typeof messageSchema>,
   id: string

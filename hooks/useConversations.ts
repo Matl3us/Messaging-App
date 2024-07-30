@@ -9,6 +9,7 @@ import {
   createPrivateConversation,
   createGroupConversation,
   addUsersToGroup,
+  updateGroupName,
 } from "@/utils/api";
 
 interface ConversationItem {
@@ -139,7 +140,7 @@ export function useCreatePrivateConv(refreshConversations?: () => void) {
   return acceptInvite;
 }
 
-export function useCreateGroup(refreshConversations: () => void) {
+export function useCreateGroup() {
   const router = useRouter();
   const createGroup = async (
     name: string,
@@ -152,7 +153,6 @@ export function useCreateGroup(refreshConversations: () => void) {
       if (createResponse.ok) {
         const addResponse = await addUsersToGroup(data.id, userIds);
         if (addResponse.ok) {
-          refreshConversations();
           setOpen(false);
           router.push(`/conversations/${data.id}`);
         }
@@ -165,16 +165,35 @@ export function useCreateGroup(refreshConversations: () => void) {
   return createGroup;
 }
 
-export function useAddToGroup(refreshConversations: () => void) {
+export function useChangeName() {
+  const changeName = async (
+    conversationId: string,
+    name: string,
+    setOpen: (open: boolean) => void
+  ) => {
+    try {
+      const response = await updateGroupName(conversationId, name);
+      if (response.ok) {
+          setOpen(false);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  return changeName;
+}
+
+
+export function useAddToGroup() {
   const createGroup = async (
-    groupId: string,
+    conversationId: string,
     userIds: Array<string>,
     setOpen: (open: boolean) => void
   ) => {
     try {
-      const addResponse = await addUsersToGroup(groupId, userIds);
+      const addResponse = await addUsersToGroup(conversationId, userIds);
       if (addResponse.ok) {
-        refreshConversations();
         setOpen(false);
       }
     } catch (error) {

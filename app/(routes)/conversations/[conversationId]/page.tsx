@@ -5,6 +5,7 @@ import ChatMessages from "@/components/element/chat-messages";
 import { useEffect, useState } from "react";
 import {
   useAddToGroup,
+  useChangeName,
   useConversation,
   useConversations,
 } from "@/hooks/useConversations";
@@ -17,7 +18,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
-import { Info, Loader2, UserPlus } from "lucide-react";
+import { Ban, Check, Info, Loader2, PenLine, UserPlus } from "lucide-react";
 
 import Image from "next/image";
 import GroupIcon from "@/components/ui/group-icon";
@@ -42,12 +43,15 @@ const Conversation = ({ params }: { params: IParams }) => {
   const { conversation, loadingConversation } = useConversation(conversationId);
   const { friends, loadingFriends } = useFriends();
   const [friendName, setFriendName] = useState("");
+  const [groupName, setGroupName] = useState("");
 
   const [opened, setOpened] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [changeNameOpen, setChangeNameOpen] = useState(false);
 
   const { refreshConversations } = useConversations();
-  const addToGroup = useAddToGroup(refreshConversations);
+  const addToGroup = useAddToGroup();
+  const updateName = useChangeName();
 
   const [userData, setUserData] = useState<UserData>({
     id: "",
@@ -61,7 +65,8 @@ const Conversation = ({ params }: { params: IParams }) => {
       const obj = JSON.parse(item) as UserData;
       setUserData(obj);
     }
-  }, []);
+    setGroupName(conversation?.name ?? "");
+  }, [conversation]);
 
   let name = "";
   let imageUrl = "";
@@ -69,8 +74,15 @@ const Conversation = ({ params }: { params: IParams }) => {
     const otherUsers = conversation?.members.filter(
       (member) => member.id !== userData.id
     );
-    name = conversation?.name ? conversation?.name : otherUsers[0].username;
-    imageUrl = otherUsers[0].imageUrl;
+    if (otherUsers.length > 1) {
+      name = conversation?.name ? conversation?.name : otherUsers[0].username;
+      imageUrl = otherUsers[0].imageUrl;
+    } else {
+      name = conversation?.name
+        ? conversation?.name
+        : conversation?.members[0].username;
+      imageUrl = conversation?.members[0].imageUrl;
+    }
   }
 
   const filteredFriends = friends.filter((item) => {
@@ -105,7 +117,7 @@ const Conversation = ({ params }: { params: IParams }) => {
                 />
               )}
 
-              <p className="text-background-100 text-base font-semibold">
+              <p className="text-background-100 text-large font-semibold">
                 {name}
               </p>
             </div>
@@ -141,9 +153,46 @@ const Conversation = ({ params }: { params: IParams }) => {
                           />
                         )}
 
-                        <p className="text-background-50 text-2xl font-semibold">
-                          {name}
-                        </p>
+                        <div className="flex gap-2">
+                          {changeNameOpen ? (
+                            <>
+                              <Input
+                                className="h-8 text-[24px]"
+                                onChange={(e) => setGroupName(e.target.value)}
+                                value={groupName}
+                              />
+                              <Check
+                                size="32"
+                                className="p-1 hover:bg-background-700 text-success rounded-lg"
+                                onClick={() => {
+                                  if (groupName) {
+                                    updateName(
+                                      conversationId,
+                                      groupName,
+                                      setDialogOpen
+                                    );
+                                  }
+                                }}
+                              />
+                              <Ban
+                                size="32"
+                                className="p-1 hover:bg-background-700 text-error rounded-lg"
+                                onClick={() => setChangeNameOpen(false)}
+                              />
+                            </>
+                          ) : (
+                            <>
+                              <p className="text-background-50 text-[24px] font-semibold">
+                                {name}
+                              </p>
+                              <PenLine
+                                size="32"
+                                className="p-1 hover:bg-background-700 text-background-400 rounded-lg"
+                                onClick={() => setChangeNameOpen(true)}
+                              />
+                            </>
+                          )}
+                        </div>
                       </div>
                       <Separator className="my-4" />
                       <p className="text-background-100 mb-2">Members</p>

@@ -62,7 +62,7 @@ export default function RootLayout({
   useConversationsSocket({ conversations, setConversations });
 
   const createInvite = useCreatePrivateConv(refreshConversations);
-  const createGroup = useCreateGroup(refreshConversations);
+  const createGroup = useCreateGroup();
 
   const [opened, setOpened] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
