@@ -10,6 +10,7 @@ interface FriendItem {
     id: string;
     username: string;
     imageUrl: string;
+    status: "ONLINE" | "AWAY" | "DONTDISTURB" | "OFFLINE";
   };
 }
 
@@ -37,6 +38,7 @@ export async function GET() {
             id: true,
             username: true,
             imageUrl: true,
+            status: true,
           },
         },
       },
@@ -54,6 +56,7 @@ export async function GET() {
             id: true,
             username: true,
             imageUrl: true,
+            status: true,
           },
         },
       },
@@ -67,6 +70,7 @@ export async function GET() {
           id: e.receiver.id,
           username: e.receiver.username,
           imageUrl: e.receiver.imageUrl,
+          status: e.receiver.status,
         },
       })),
       ...receivedPart.map((e) => ({
@@ -75,6 +79,7 @@ export async function GET() {
           id: e.sender.id,
           username: e.sender.username,
           imageUrl: e.sender.imageUrl,
+          status: e.sender.status,
         },
       })),
     ];

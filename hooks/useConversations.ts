@@ -12,6 +12,8 @@ import {
   updateGroupName,
 } from "@/utils/api";
 
+type Status = "ONLINE" | "AWAY" | "DONTDISTURB" | "OFFLINE";
+
 interface ConversationItem {
   id: string;
   name?: string;
@@ -24,6 +26,7 @@ interface UserItem {
   id: string;
   username: string;
   imageUrl: string;
+  status: Status;
 }
 
 interface MessageItem {
@@ -174,7 +177,7 @@ export function useChangeName() {
     try {
       const response = await updateGroupName(conversationId, name);
       if (response.ok) {
-          setOpen(false);
+        setOpen(false);
       }
     } catch (error) {
       console.error(error);
@@ -183,7 +186,6 @@ export function useChangeName() {
 
   return changeName;
 }
-
 
 export function useAddToGroup() {
   const createGroup = async (

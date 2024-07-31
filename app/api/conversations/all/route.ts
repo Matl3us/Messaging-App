@@ -34,6 +34,7 @@ export async function GET() {
             id: true,
             username: true,
             imageUrl: true,
+            status: true,
           },
         },
         messages: {

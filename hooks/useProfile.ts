@@ -1,8 +1,15 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { fetchProfile, updateProfileImage, updateUserStatus } from "@/utils/api";
+import { useState, useEffect, Dispatch, SetStateAction } from "react";
+import {
+  fetchProfile,
+  fetchUserStatus,
+  updateProfileImage,
+  updateUserStatus,
+} from "@/utils/api";
 import { useRouter } from "next/navigation";
+
+type Status = "ONLINE" | "AWAY" | "DONTDISTURB" | "OFFLINE";
 
 interface Profile {
   id: string;
@@ -10,7 +17,7 @@ interface Profile {
   username: string;
   imageUrl: string;
   friendCode: string;
-  status: "ONLINE" | "AWAY" | "DONTDISTURB" | "OFFLINE";
+  status: Status;
 }
 
 export function useProfile(): { profile: Profile; loadingProfile: boolean } {
@@ -20,13 +27,14 @@ export function useProfile(): { profile: Profile; loadingProfile: boolean } {
     username: "",
     imageUrl: "",
     friendCode: "",
+    status: "ONLINE" as Status,
   });
   const [loadingProfile, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchPostsData() {
       try {
-        const fetchedProfile: Profile = await fetchProfile();     
+        const fetchedProfile: Profile = await fetchProfile();
         setProfile(fetchedProfile);
         setLoading(false);
       } catch (error) {
@@ -70,4 +78,29 @@ export function useUpdateStatus() {
   };
 
   return changeStatus;
+}
+
+export function useCheckStatus(): {
+  userStatus: Status;
+  setUserStatus: Dispatch<SetStateAction<Status>>;
+  loadingStatus: boolean;
+} {
+  const [userStatus, setUserStatus] = useState<Status>("ONLINE");
+  const [loadingStatus, setLoading] = useState(true);
+
+  const checkStatus = async () => {
+    try {
+      const { status } = await fetchUserStatus();
+      setUserStatus(status);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching user status:", error);
+    }
+  };
+
+  useEffect(() => {
+    checkStatus();
+  }, []);
+
+  return { userStatus, setUserStatus, loadingStatus };
 }

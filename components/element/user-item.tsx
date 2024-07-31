@@ -1,5 +1,3 @@
-import Image from "next/image";
-
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,11 +7,13 @@ import {
 
 import { EllipsisVertical, X } from "lucide-react";
 import { Check } from "lucide-react";
+import UserAvatar from "./user-avatar";
 
 interface UserItemProps {
   id: string;
   username: string;
   imageUrl: string;
+  status: "ONLINE" | "AWAY" | "DONTDISTURB" | "OFFLINE";
   type: "friend" | "invitation" | "notification";
   onSubmit: (id: string) => void;
   onDelete: (id: string) => void;
@@ -23,6 +23,7 @@ const UserItem = ({
   id,
   username,
   imageUrl,
+  status,
   type,
   onSubmit,
   onDelete,
@@ -30,15 +31,7 @@ const UserItem = ({
   return (
     <div className="flex items-center justify-between bg-background-800 hover:bg-background-700 rounded-md p-4">
       <div className="flex items-center gap-4">
-        <Image
-          className="rounded-lg"
-          src={imageUrl}
-          placeholder="empty"
-          alt="Avatar"
-          width="40"
-          height="40"
-          unoptimized
-        />
+        <UserAvatar imageUrl={imageUrl} status={status} size="medium" />
         {type === "notification" && (
           <p className="text-background-50 text-base font-semibold">
             {username} has sent you a friend request
@@ -66,7 +59,7 @@ const UserItem = ({
       {type === "friend" && (
         <DropdownMenu>
           <DropdownMenuTrigger>
-            <div className="flex items-center p-[1px] hover:bg-background-800 rounded-md">
+            <div className="flex items-center py-1 hover:bg-background-800 rounded-md">
               <EllipsisVertical size="24" className="text-primary-700" />
             </div>
           </DropdownMenuTrigger>

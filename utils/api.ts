@@ -121,7 +121,7 @@ export const addUsersToGroup = async (id: string, userIds: Array<string>) => {
   });
 };
 
-export const updateGroupName= async (conversationId: string, name: string) => {
+export const updateGroupName = async (conversationId: string, name: string) => {
   return fetch("/api/conversations/group/name", {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
@@ -161,3 +161,12 @@ export const updateUserStatus = async (status: number) => {
   });
 };
 
+export const fetchUserStatus = async () => {
+  const response = await fetch("/api/profile/status", {
+    method: "GET",
+  });
+  if (!response.ok) {
+    throw new Error("Failed to fetch user status.");
+  }
+  return response.json();
+};

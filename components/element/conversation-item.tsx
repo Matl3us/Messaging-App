@@ -1,8 +1,8 @@
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 import { format } from "date-fns";
 import GroupIcon from "../ui/group-icon";
+import UserAvatar from "./user-avatar";
 
 const DATE_FORMAT = "d MMM yyyy, HH:mm";
 
@@ -19,6 +19,7 @@ interface UserItemProps {
   id: string;
   username: string;
   imageUrl: string;
+  status: "ONLINE" | "AWAY" | "DONTDISTURB" | "OFFLINE";
 }
 
 interface MessageItem {
@@ -66,14 +67,10 @@ const ConversationItem = ({
         {isGroup ? (
           <GroupIcon members={members} size="small" />
         ) : (
-          <Image
-            className="rounded-lg"
-            src={otherUsers[0]?.imageUrl}
-            placeholder="empty"
-            alt="Avatar"
-            width="32"
-            height="32"
-            unoptimized
+          <UserAvatar
+            imageUrl={otherUsers[0]?.imageUrl}
+            status={otherUsers[0]?.status}
+            size="small"
           />
         )}
         <div className="pb-1 font-semibold">

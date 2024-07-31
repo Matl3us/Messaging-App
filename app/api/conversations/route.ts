@@ -41,6 +41,7 @@ export async function GET(req: NextRequest) {
             id: true,
             username: true,
             imageUrl: true,
+            status: true,
           },
         },
       },

@@ -60,6 +60,7 @@ export async function POST(req: Request) {
       password: passwordHash,
       imageUrl: `https://ui-avatars.com/api/?background=random&color=fff&name=${username}`,
       friendCode: uid.rnd(),
+      status: "ONLINE",
     },
   });
 

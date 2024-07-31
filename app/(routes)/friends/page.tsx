@@ -122,6 +122,7 @@ const Friends = () => {
               id={e.id}
               username={e.user?.username}
               imageUrl={e.user?.imageUrl}
+              status={e.user?.status}
               type="friend"
               onSubmit={() => {
                 createConversation(e.user?.id);

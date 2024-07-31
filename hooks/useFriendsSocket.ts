@@ -14,6 +14,7 @@ type FriendItem = {
     id: string;
     username: string;
     imageUrl: string;
+    status: "ONLINE" | "AWAY" | "DONTDISTURB" | "OFFLINE";
   };
 };
 

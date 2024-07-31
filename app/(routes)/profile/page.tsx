@@ -42,6 +42,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { passwordChangeSchema } from "@/lib/zod-schemas";
 import { usePasswordChange } from "@/hooks/usePasswordChange";
+import UserAvatar from "@/components/element/user-avatar";
 
 const Profile = () => {
   const { profile, loadingProfile } = useProfile();
@@ -91,33 +92,11 @@ const Profile = () => {
           <Skeleton className="w-16 h-16 rounded-lg mb-4" />
         ) : (
           <div className="flex items-end">
-            <Image
-              className="rounded-lg mb-4"
-              src={profile.imageUrl}
-              placeholder="empty"
-              alt="Avatar"
-              width="64"
-              height="64"
-              unoptimized
+            <UserAvatar
+              imageUrl={profile.imageUrl}
+              status={profile.status}
+              size="large"
             />
-            {profile.status === "ONLINE" && (
-              <span className="relative right-2 bottom-2 w-5 h-5 rounded-full bg-success" />
-            )}
-            {profile.status === "AWAY" && (
-              <span className="relative right-2 bottom-2 w-5 h-5 rounded-full bg-warning" />
-            )}
-            {profile.status === "DONTDISTURB" && (
-              <CircleMinus
-                className="relative right-2 bottom-2 text-error rounded-full bg-black"
-                size="20"
-              />
-            )}
-            {profile.status === "OFFLINE" && (
-              <Circle
-                className="relative right-2 bottom-2 text-background-600 rounded-full bg-black"
-                size="20"
-              />
-            )}
             <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
               <DialogTrigger>
                 <ImageUp

@@ -11,6 +11,28 @@ enum Status {
   Offline,
 }
 
+export async function GET() {
+  const cookieStore = cookies();
+  const token = cookieStore.get("token")?.value!;
+
+  try {
+    const user = await getUserData(token);
+
+    if (!user) {
+      return new NextResponse("Invalid user.", {
+        status: 400,
+      });
+    }
+
+    return NextResponse.json({ status: user.status });
+  } catch (err) {
+    console.log(err);
+    return new NextResponse("Invalid token.", {
+      status: 400,
+    });
+  }
+}
+
 export async function PUT(req: Request) {
   const cookieStore = cookies();
   const token = cookieStore.get("token")?.value!;

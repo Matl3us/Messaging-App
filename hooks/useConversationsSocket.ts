@@ -6,6 +6,8 @@ type ConversationProps = {
   setConversations: Dispatch<SetStateAction<ConversationItem[]>>;
 };
 
+type Status = "ONLINE" | "AWAY" | "DONTDISTURB" | "OFFLINE";
+
 type ConversationItem = {
   id: string;
   name?: string;
@@ -30,6 +32,7 @@ type UserItem = {
   id: string;
   username: string;
   imageUrl: string;
+  status: Status;
 };
 
 type UserData = {
