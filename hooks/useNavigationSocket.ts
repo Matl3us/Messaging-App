@@ -2,7 +2,7 @@ import { useSocket } from "@/components/providers/socket-provider";
 import { useEffect } from "react";
 
 type NavigationSocketProps = {
-  currentPage: string;
+  currentPage: string | null;
   notificationKey: string;
   messageKey: string;
   notificationCount: number;
@@ -27,17 +27,19 @@ export const useNavigationSocket = ({
       return;
     }
 
-    socket.on(notificationKey, () => {
-      if (currentPage !== "/") {
-        setNotificationCount(notificationCount + 1);
-      }
-    });
+    if (currentPage) {
+      socket.on(notificationKey, () => {
+        if (currentPage !== "/") {
+          setNotificationCount(notificationCount + 1);
+        }
+      });
 
-    socket.on(messageKey, () => {
-      if (!currentPage.startsWith("/conversations")) {
-        setMessageCount(messageCount + 1);
-      }
-    });
+      socket.on(messageKey, () => {
+        if (!currentPage.startsWith("/conversations")) {
+          setMessageCount(messageCount + 1);
+        }
+      });
+    }
 
     return () => {
       socket.off(notificationKey);

@@ -4,7 +4,7 @@ import { SocketIndicator } from "@/components/ui/socket-indicator";
 import { useEffect, useState } from "react";
 
 import Image from "next/image";
-import { Home, MessagesSquare, Settings, Shell, Users } from "lucide-react";
+import { Home, MessagesSquare,  Shell, Users } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";

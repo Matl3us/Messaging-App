@@ -8,6 +8,11 @@ import { QueryProvider } from "@/components/providers/query-provider";
 
 export const metadata: Metadata = {
   title: "Messaging app",
+  description: "Messaging app PWA application",
+  generator: "Next.js",
+  manifest: "/static/manifest.json",
+  themeColor: [{ media: "(prefers-color-scheme: dark)", color: "#fff" }],
+  icons: [{ rel: "icon", url: "icons/icon-128x128.png" }],
 };
 
 export default function RootLayout({

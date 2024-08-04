@@ -1,8 +1,6 @@
 import { cookies } from "next/headers";
-import type { NextApiRequest, NextApiResponse } from "next";
 
 import { createUploadthing, type FileRouter } from "uploadthing/next-legacy";
-import { UploadThingError } from "uploadthing/server";
 import { getUserData } from "@/lib/jwt";
 
 const f = createUploadthing();

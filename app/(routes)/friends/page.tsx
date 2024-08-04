@@ -150,6 +150,7 @@ const Friends = () => {
               id={e.id}
               username={e.receiver?.username}
               imageUrl={e.receiver?.imageUrl}
+              status="ONLINE"
               type="invitation"
               onSubmit={() => {}}
               onDelete={cancelSentInvite}

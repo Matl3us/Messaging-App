@@ -8,8 +8,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
-import Image from "next/image";
-
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -17,15 +15,10 @@ import { useProfile, useUpdateImage } from "@/hooks/useProfile";
 
 import { LoadingSpinner } from "@/components/ui/spinner";
 import { useState } from "react";
-import {
-  Circle,
-  CircleMinus,
-  ClipboardCopy,
-  CloudUpload,
-  EyeOff,
-  ImageUp,
-} from "lucide-react";
+import { ClipboardCopy, CloudUpload, EyeOff, ImageUp } from "lucide-react";
+
 import { UploadButton } from "@uploadthing/react";
+import { OurFileRouter } from "@/app/api/uploadthing/core";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -109,10 +102,11 @@ const Profile = () => {
                   <DialogTitle className="mb-4">Upload image</DialogTitle>
                   <div className="mx-2 p-6 border rounded-md border-background-500 flex flex-col items-center justify-center">
                     <CloudUpload size={48} />
-                    <UploadButton
+                    {/* @ts-ignore */}
+                    <UploadButton<OurFileRouter>
                       className="text-background-100 p-1 rounded-md hover:bg-background-900"
                       endpoint="messageImage"
-                      onClientUploadComplete={(res) => {
+                      onClientUploadComplete={(res: any) => {
                         updateImage(res[0].url);
                       }}
                       onUploadError={(error: Error) => {

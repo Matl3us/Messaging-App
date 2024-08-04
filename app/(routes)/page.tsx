@@ -34,6 +34,7 @@ const Home = () => {
             id={e.id}
             username={e.sender?.username}
             imageUrl={e.sender?.imageUrl}
+            status="ONLINE"
             type="notification"
             onSubmit={acceptInvite}
             onDelete={rejectInvite}
